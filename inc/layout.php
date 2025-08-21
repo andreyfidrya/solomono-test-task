@@ -1,3 +1,9 @@
+<?php
+
+require_once "functions.php";
+
+?>
+
 <!doctype html>
 <html class="modern fixed has-top-menu has-left-sidebar-half">
 	<head>
@@ -58,16 +64,9 @@
 										<div class="card-actions">
 											<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 										</div>
-										<h4 class="card-title">CATEGORIES</h4>
+										<h4 class="card-title">КАТЕГОРИИ</h4>
 									</div>
-									<div class="card-body">
-										<ul class="list list-unstyled mb-0">
-											<li><a href="#">Smart TVs</a></li>
-											<li><a href="#">Cameras</a></li>
-											<li><a href="#">Headphones</a></li>
-											<li><a href="#">Games</a></li>
-										</ul>
-									</div>
+									<?= displayCategoriesList(); ?>
 								</div>																
 							</div>
 						</div>
