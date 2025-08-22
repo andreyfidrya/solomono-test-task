@@ -80,7 +80,7 @@ function renderAllProducts() {
                         </a>
                     </h4>
                     <div class="product-price">
-                        <div class="sale-price">$<?= number_format($product['product_price'], 2) ?></div>
+                        <div class="sale-price"><?= number_format($product['product_price'], 2) ?> грн</div>
                     </div>
                 </div>
             </div>
