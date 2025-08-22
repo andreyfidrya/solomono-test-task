@@ -11,7 +11,7 @@ require_once "functions.php";
 		<!-- Basic -->
 		<meta charset="UTF-8">
 
-		<title>Products | Porto Admin - Responsive HTML5 Template</title>
+		<title>Тестове завдання 1: Категорії і товари</title>
 
 		<meta name="keywords" content="HTML5 Admin Template" />
 		<meta name="description" content="Porto Admin - Responsive HTML5 Template">
@@ -66,7 +66,7 @@ require_once "functions.php";
 										</div>
 										<h4 class="card-title">КАТЕГОРИИ</h4>
 									</div>
-									<?= displayCategoriesList(); ?>
+									<?= displayCategoriesList($pdo); ?>
 								</div>																
 							</div>
 						</div>

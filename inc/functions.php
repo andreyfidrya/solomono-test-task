@@ -15,22 +15,35 @@ function getAllCategories() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);    
 }
 
-function displayCategoriesList() {
-        $categories = getAllCategories();
+function getAllCategoriesWithCounts(PDO $pdo) {
+    $sql = "
+        SELECT c.id, c.category_name, COUNT(p.id) AS product_count
+        FROM categories c
+        LEFT JOIN products p ON c.id = p.category_id
+        GROUP BY c.id, c.category_name
+        ORDER BY c.id ASC
+    ";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
-        $html = '<div class="card-body">';
-        $html .= '<ul class="list list-unstyled mb-0">';
+function displayCategoriesList(PDO $pdo) {
+    $categories = getAllCategoriesWithCounts($pdo);
 
-        foreach ($categories as $category) {
-            $html .= '<li>';
-            $html .= '<a href="category.php?id=' . (int)$category['id'] . '">';
-            $html .= htmlspecialchars($category['category_name']);
-            $html .= '</a>';
-            $html .= '</li>';
-        }
+    $html = '<div class="card-body">';
+    $html .= '<ul class="list list-unstyled mb-0">';
 
-        $html .= '</ul>';
-        $html .= '</div>';
+    foreach ($categories as $category) {
+        $html .= '<li>';
+        $html .= '<a href="category.php?id=' . (int)$category['id'] . '">';
+        $html .= htmlspecialchars($category['category_name']);
+        $html .= ' (' . (int)$category['product_count'] . ')'; // <-- количество товаров
+        $html .= '</a>';
+        $html .= '</li>';
+    }
 
-        return $html;
+    $html .= '</ul>';
+    $html .= '</div>';
+
+    return $html;
 }
