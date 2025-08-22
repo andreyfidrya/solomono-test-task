@@ -78,7 +78,7 @@ class DatabaseSetup
             ('6','Маховое удилище Fishing ROI Telepole Cyclone 500 б/к', '1178', 'udilische_fishing_roi_telepole_cyclone_2v_4.600x340.jpg', '2025-08-21 21:13:54', '3'),
             ('7','Маховое удилище Fishing ROI Telepole Cyclone 600 б/к', '1482', 'udilische_fishing_roi_telepole_cyclone_2v_3.600x340.jpg', '2025-08-21 21:13:54', '3'),
             ('8','Спиннинг FR ANACONDA 2,10м (702M) 5-25gr', '1117', 'spinning-fr-anaconda.600x340.jpg', '2025-08-21 21:13:54', '4'),
-            ('9','Спиннинг Fishing ROI X-Viper 2.10m MT 5-25g', '1050', 'spinning-fishing-roi-x-viper-2.10m-mt-5-25g', '2025-08-21 21:13:54', '4'),
+            ('9','Спиннинг Fishing ROI X-Viper 2.10m MT 5-25g', '1050', 'kupit-spinning-fishing-roi-x-viper_1.600x340.jpg', '2025-08-21 21:13:54', '4'),
             ('10','Спиннинг Fishing ROI XT-ONE 5-25g 2.10m', '803', 'spinning-fishing-roi-xt-one.600x340.jpg', '2025-08-21 21:13:54', '4');";
             $this->pdo->exec($insertProductsQuery);
         }
