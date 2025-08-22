@@ -67,9 +67,19 @@ require_once "functions.php";
 										<h4 class="card-title">КАТЕГОРИИ</h4>
 									</div>
 									<?= displayCategoriesList($pdo); ?>
+								</div>
+								<hr class="solid opacity-7">
+								<div class="p-3">
+									<label for="sort" class="form-label fw-bold">Сортировка:</label>
+									<select id="sort" class="form-select" onchange="sortProducts(this.value)">
+										<option value="">Выберите...</option>
+										<option value="price_asc">Сначала дешёвые</option>
+										<option value="alphabet">По алфавиту</option>
+										<option value="newest">Сначала новые</option>
+									</select>
 								</div>																
 							</div>
-						</div>
+						</div>						
 						<div class="col-lg-3-5 col-xl-4-5">
 							<div class="row row-gutter-sm" id="products-container">
 
