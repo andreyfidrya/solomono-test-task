@@ -71,7 +71,7 @@ require_once "functions.php";
 							</div>
 						</div>
 						<div class="col-lg-3-5 col-xl-4-5">
-							<div class="row row-gutter-sm">
+							<div class="row row-gutter-sm" id="products-container">
 
 								<?= renderAllProducts(); ?>									
 
@@ -113,5 +113,26 @@ require_once "functions.php";
 		<script src="js/examples/examples.ecommerce.form.js"></script>
 		<script src="js/examples/examples.ecommerce.sidebar.overlay.js"></script>
 
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+		$(document).on('click', '.category-link', function(e) {
+			e.preventDefault();
+
+			let categoryId = $(this).data('id');
+
+			$.ajax({
+				url: 'get_products.php',
+				type: 'GET',
+				data: { id: categoryId },
+				success: function(response) {
+					// Подставляем товары в контейнер
+					$('#products-container').html(response);
+				},
+				error: function() {
+					alert('Ошибка загрузки товаров');
+				}
+			});
+		});
+		</script>
 	</body>
 </html>

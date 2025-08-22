@@ -28,7 +28,7 @@ function displayCategoriesList(PDO $pdo) {
 
     foreach ($categories as $category) {
         $html .= '<li>';
-        $html .= '<a href="category.php?id=' . (int)$category['id'] . '">';
+        $html .= '<a href="#" class="category-link" data-id="' . (int)$category['id'] . '">';
         $html .= htmlspecialchars($category['category_name']);
         $html .= ' (' . (int)$category['product_count'] . ')'; // <-- количество товаров
         $html .= '</a>';
