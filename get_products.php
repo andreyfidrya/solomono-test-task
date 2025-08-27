@@ -4,11 +4,30 @@ require_once "db.php";
 // Получаем id категории из GET
 $categoryId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
+// Получаем сортировку из GET
+$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
 $sql = "SELECT * FROM products";
+
+// Фильтр по категории
 if ($categoryId > 0) {
     $sql .= " WHERE category_id = :category_id";
 }
-$sql .= " ORDER BY id ASC";
+
+// Сортировка
+switch ($sort) {
+    case 'price_asc':
+        $sql .= " ORDER BY product_price ASC";
+        break;    
+    case 'alphabet':
+        $sql .= " ORDER BY product_name ASC";
+        break;
+    case 'newest':
+        $sql .= " ORDER BY product_date DESC";
+        break;
+    default:
+        $sql .= " ORDER BY id ASC";
+}
 
 $stmt = $pdo->prepare($sql);
 

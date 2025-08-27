@@ -57,38 +57,35 @@ require_once "functions.php";
 	</head>
 	<body>
 		<div class="row row-gutter-sm mb-5">
-						<div class="col-lg-2-5 col-xl-1-5 mb-4 mb-lg-0">
-							<div class="filters-sidebar-wrapper bg-light rounded">
-								<div class="card card-modern">
-									<div class="card-header">
-										<div class="card-actions">
-											<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
-										</div>
-										<h4 class="card-title">КАТЕГОРИИ</h4>
-									</div>
-									<?= displayCategoriesList($pdo); ?>
-								</div>
-								<hr class="solid opacity-7">
-								<div class="p-3">
-									<label for="sort" class="form-label fw-bold">Сортировка:</label>
-									<select id="sort" class="form-select" onchange="sortProducts(this.value)">
-										<option value="">Выберите...</option>
-										<option value="price_asc">Сначала дешёвые</option>
-										<option value="alphabet">По алфавиту</option>
-										<option value="newest">Сначала новые</option>
-									</select>
-								</div>																
+			<div class="col-lg-2-5 col-xl-1-5 mb-4 mb-lg-0">
+				<div class="filters-sidebar-wrapper bg-light rounded">
+					<div class="card card-modern">
+						<div class="card-header">
+							<div class="card-actions">
+								<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 							</div>
-						</div>						
-						<div class="col-lg-3-5 col-xl-4-5">
-							<div class="row row-gutter-sm" id="products-container">
-
-								<?= renderAllProducts(); ?>									
-
-							</div>
-							
+							<h4 class="card-title">КАТЕГОРИИ</h4>
 						</div>
+						<?= displayCategoriesList($pdo); ?>
 					</div>
+					<hr class="solid opacity-7">
+					<div class="p-3">
+						<label for="sort" class="form-label fw-bold">Сортировка:</label>
+						<select id="sort" class="form-select" onchange="sortProducts(this.value)">
+							<option value="">Выберите...</option>
+							<option value="price_asc">Сначала дешёвые</option>
+							<option value="alphabet">По алфавиту</option>
+							<option value="newest">Сначала новые</option>
+						</select>
+					</div>																
+				</div>
+			</div>						
+			<div class="col-lg-3-5 col-xl-4-5">
+				<div class="row row-gutter-sm" id="products-container">
+					<?= renderAllProducts(); ?>								
+				</div>							
+			</div>
+		</div>
 
 		<!-- Vendor -->
 		<script src="vendor/jquery/jquery.js"></script>
@@ -125,24 +122,37 @@ require_once "functions.php";
 
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script>
-		$(document).on('click', '.category-link', function(e) {
-			e.preventDefault();
+		$(document).ready(function () {
+			let currentCategory = 0;
 
-			let categoryId = $(this).data('id');
+			// загрузка товаров (категория + сортировка)
+			function loadProducts(categoryId = 0, sort = "") {
+				$.ajax({
+					url: 'get_products.php',
+					type: 'GET',
+					data: { id: categoryId, sort: sort },
+					success: function (response) {
+						$('#products-container').html(response);
+					},
+					error: function () {
+						alert('Ошибка загрузки товаров');
+					}
+				});
+			}
 
-			$.ajax({
-				url: 'get_products.php',
-				type: 'GET',
-				data: { id: categoryId },
-				success: function(response) {
-					// Подставляем товары в контейнер
-					$('#products-container').html(response);
-				},
-				error: function() {
-					alert('Ошибка загрузки товаров');
-				}
+			// клик по категории
+			$(document).on('click', '.category-link', function (e) {
+				e.preventDefault();
+				currentCategory = $(this).data('id');
+				loadProducts(currentCategory, $('#sort').val());
+			});
+
+			// выбор сортировки
+			$('#sort').on('change', function () {
+				loadProducts(currentCategory, $(this).val());
 			});
 		});
 		</script>
+		
 	</body>
 </html>
