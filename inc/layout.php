@@ -64,18 +64,18 @@ require_once "functions.php";
 							<div class="card-actions">
 								<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 							</div>
-							<h4 class="card-title">КАТЕГОРИИ</h4>
+							<h4 class="card-title">КАТЕГОРІЇ</h4>
 						</div>
 						<?= displayCategoriesList($pdo); ?>
 					</div>
 					<hr class="solid opacity-7">
 					<div class="p-3">
-						<label for="sort" class="form-label fw-bold">Сортировка:</label>
+						<label for="sort" class="form-label fw-bold">Сортування:</label>
 						<select id="sort" class="form-select" onchange="sortProducts(this.value)">
-							<option value="">Выберите...</option>
-							<option value="price_asc">Сначала дешёвые</option>
-							<option value="alphabet">По алфавиту</option>
-							<option value="newest">Сначала новые</option>
+							<option value="">Зробіть вибір...</option>
+							<option value="price_asc">Спочатку дешеві</option>
+							<option value="alphabet">По алфавіту</option>
+							<option value="newest">Спочатку нові</option>
 						</select>
 					</div>																
 				</div>
@@ -153,6 +153,81 @@ require_once "functions.php";
 			});
 		});
 		</script>
+		<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			let cart = {};
+			const cartModalEl = document.getElementById('cartModal');
+			const cartModal = new bootstrap.Modal(cartModalEl); // создаем один раз
+
+			function updateCartTable() {
+				const tbody = document.querySelector('#cartTable tbody');
+				tbody.innerHTML = '';
+				let total = 0;
+
+				for (const id in cart) {
+					const item = cart[id];
+					const itemTotal = item.price * item.quantity;
+					total += itemTotal;
+
+					const tr = document.createElement('tr');
+					tr.innerHTML = `
+						<td><img src="${item.image}" alt="${item.name}" width="50"></td>
+						<td>${item.name}</td>
+						<td>${item.price} грн</td>
+						<td><input type="number" min="1" value="${item.quantity}" class="form-control form-control-sm cart-qty" data-id="${id}"></td>
+						<td class="item-total">${itemTotal.toFixed(2)} грн</td>
+						<td><button class="btn btn-danger btn-sm btn-remove" data-id="${id}">Удалить</button></td>
+					`;
+					tbody.appendChild(tr);
+				}
+
+				document.getElementById('cartTotal').textContent = total.toFixed(2) + ' грн';
+			}
+			
+			// Обработка нажатия "Купить"
+			document.querySelectorAll('.btn-buy').forEach(button => {
+				button.addEventListener('click', function () {
+					const id = this.dataset.id;
+					const name = this.dataset.name;
+					const price = parseFloat(this.dataset.price);
+					const image = this.dataset.image;
+
+					if (cart[id]) {
+						cart[id].quantity += 1;
+					} else {
+						cart[id] = {id, name, price, image, quantity: 1};
+						this.textContent = 'В коршику';      // меняем текст кнопки
+						this.classList.remove('btn-primary');
+						this.classList.add('btn-success');   // для наглядности
+					}
+
+					updateCartTable();
+					cartModal.show();
+				});
+			});
+
+			// Изменение количества
+			document.getElementById('cartTable').addEventListener('input', function (e) {
+				if (e.target.classList.contains('cart-qty')) {
+					const id = e.target.dataset.id;
+					let qty = parseInt(e.target.value);
+					if (qty < 1) qty = 1;
+					cart[id].quantity = qty;
+					updateCartTable();
+				}
+			});			
+
+			// Удаление товара
+			document.getElementById('cartTable').addEventListener('click', function (e) {
+				if (e.target.classList.contains('btn-remove')) {
+					const id = e.target.dataset.id;
+					delete cart[id];
+					updateCartTable();
+				}
+			});
+		});
+		</script>
+
 		
 	</body>
 </html>

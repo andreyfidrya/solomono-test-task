@@ -82,9 +82,60 @@ function renderAllProducts() {
                     <div class="product-price">
                         <div class="sale-price"><?= number_format($product['product_price'], 2) ?> грн</div>
                     </div>
+                    <div class="text-center mt-3">
+                        <button type="button" 
+                                class="btn btn-primary btn-buy"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#cartModal"
+                                data-id="<?= $product['id'] ?>"
+                                data-name="<?= htmlspecialchars($product['product_name'], ENT_QUOTES) ?>"
+                                data-price="<?= $product['product_price'] ?>"
+                                data-image="images/<?= htmlspecialchars($product['product_image'], ENT_QUOTES) ?>">
+                            Купити
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartModalLabel">Корзина</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered align-middle" id="cartTable">
+                <thead>
+                    <tr>
+                    <th>Фото</th>
+                    <th>Назва</th>
+                    <th>Ціна</th>
+                    <th>Кількість</th>
+                    <th>Сума</th>
+                    <th>Видалити</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Товары будут добавляться сюда через JS -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <th colspan="4" class="text-end">Разом:</th>
+                    <th id="cartTotal">0 грн</th>
+                    <th></th>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                <button type="button" class="btn btn-success">Оформити заказ</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
         <?php
     }
 }

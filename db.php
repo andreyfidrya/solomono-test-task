@@ -60,26 +60,26 @@ class DatabaseSetup
         // Вставка записей в таблицу categories
         if (!$this->categoriesExist()) {
             $insertCategoriesQuery = "INSERT INTO `categories` (`id`, `category_name`) VALUES
-            ('1','Фидерные удилища'),
-            ('2','Болонские удилища'),
-            ('3','Маховые удилища'),
-            ('4','Спиннинговые удилища');";
+            ('1','Фідерні вудилища'),
+            ('2','Болонські вудки'),
+            ('3','Матчові вудилища'),
+            ('4','Спінінгові вудилища');";
             $this->pdo->exec($insertCategoriesQuery);
         }
 
         // Вставка записей в таблицу products
         if (!$this->productsExist()) {
             $insertProductsQuery = "INSERT INTO `products` (`id`, `product_name`, `product_price`, `product_image`,`product_date`,`category_id`) VALUES
-            ('1','Фидерное удилище Fishing ROI Titan Key Seven 360 Feeder 100gr', '1979', 'udilische-key-seven_2.600x340.jpg', '2025-08-21 21:13:20', '1'),
-            ('2','Фидерное удилище Fishing ROI Titan Key Seven 360 Feeder 120gr', '2054', 'udilische-key-seven_1.600x340.jpg', '2025-08-21 21:13:21', '1'),
-            ('3','Фидерное удилище Fishing ROI REWIN 360 M Method-Feeder 100gr', '1774', '225-76-360.600x340.jpg', '2025-08-21 21:13:23', '1'),
-            ('4','Болонское удилище Fishing ROI Cyclone bolo 600 с/к', '2070', 'udilische_fishing_roi_bolognese_cyclone_2v_1.600x340.jpg', '2025-08-21 21:13:24', '2'),
-            ('5','Болонское удилище Fishing ROI Cyclone bolo 500 с/к', '1710', 'udilische_fishing_roi_bolognese_cyclone_2v_3.600x340.jpg', '2025-08-21 21:13:25', '2'),
-            ('6','Маховое удилище Fishing ROI Telepole Cyclone 500 б/к', '1178', 'udilische_fishing_roi_telepole_cyclone_2v_4.600x340.jpg', '2025-08-21 21:13:27', '3'),
-            ('7','Маховое удилище Fishing ROI Telepole Cyclone 600 б/к', '1482', 'udilische_fishing_roi_telepole_cyclone_2v_3.600x340.jpg', '2025-08-21 21:13:30', '3'),
-            ('8','Спиннинг FR ANACONDA 2,10м (702M) 5-25gr', '1117', 'spinning-fr-anaconda.600x340.jpg', '2025-08-21 21:13:35', '4'),
-            ('9','Спиннинг Fishing ROI X-Viper 2.10m MT 5-25g', '1050', 'kupit-spinning-fishing-roi-x-viper_1.600x340.jpg', '2025-08-21 21:13:40', '4'),
-            ('10','Спиннинг Fishing ROI XT-ONE 5-25g 2.10m', '803', 'spinning-fishing-roi-xt-one.600x340.jpg', '2025-08-21 21:13:41', '4');";
+            ('1','Фідерне вудилище Fishing ROI Titan Key Seven 360 Feeder 100gr', '1979', 'udilische-key-seven_2.600x340.jpg', '2025-08-21 21:13:20', '1'),
+            ('2','Фідерне вудилище Fishing ROI Titan Key Seven 360 Feeder 120gr', '2054', 'udilische-key-seven_1.600x340.jpg', '2025-08-21 21:13:21', '1'),
+            ('3','Фідерне вудилище Fishing ROI REWIN 360 M Method-Feeder 100gr', '1774', '225-76-360.600x340.jpg', '2025-08-21 21:13:23', '1'),
+            ('4','Болонське вудилище Fishing ROI Cyclone bolo 600 с/к', '2070', 'udilische_fishing_roi_bolognese_cyclone_2v_1.600x340.jpg', '2025-08-21 21:13:24', '2'),
+            ('5','Болонське вудилище Fishing ROI Cyclone bolo 500 с/к', '1710', 'udilische_fishing_roi_bolognese_cyclone_2v_3.600x340.jpg', '2025-08-21 21:13:25', '2'),
+            ('6','Махове вудилище Fishing ROI Telepole Cyclone 500 б/к', '1178', 'udilische_fishing_roi_telepole_cyclone_2v_4.600x340.jpg', '2025-08-21 21:13:27', '3'),
+            ('7','Махове вудилище Fishing ROI Telepole Cyclone 600 б/к', '1482', 'udilische_fishing_roi_telepole_cyclone_2v_3.600x340.jpg', '2025-08-21 21:13:30', '3'),
+            ('8','Спінінг FR ANACONDA 2,10м (702M) 5-25gr', '1117', 'spinning-fr-anaconda.600x340.jpg', '2025-08-21 21:13:35', '4'),
+            ('9','Спінінг Fishing ROI X-Viper 2.10m MT 5-25g', '1050', 'kupit-spinning-fishing-roi-x-viper_1.600x340.jpg', '2025-08-21 21:13:40', '4'),
+            ('10','Спінінг Fishing ROI XT-ONE 5-25g 2.10m', '803', 'spinning-fishing-roi-xt-one.600x340.jpg', '2025-08-21 21:13:41', '4');";
             $this->pdo->exec($insertProductsQuery);
         }
     
