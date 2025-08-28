@@ -87,6 +87,44 @@ require_once "functions.php";
 			</div>
 		</div>
 
+		<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="cartModalLabel">Корзина</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+					</div>
+					<div class="modal-body">
+						<table class="table table-bordered align-middle" id="cartTable">
+							<thead>
+								<tr>
+									<th>Фото</th>
+									<th>Назва</th>
+									<th>Ціна</th>
+									<th>Кількість</th>
+									<th>Сума</th>
+									<th>Видалити</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" class="text-end">Разом:</th>
+									<th id="cartTotal">0 грн</th>
+									<th></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+						<button type="button" class="btn btn-success">Оформити заказ</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 		<!-- Vendor -->
 		<script src="vendor/jquery/jquery.js"></script>
 		<script src="vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
@@ -201,25 +239,26 @@ require_once "functions.php";
 			}
 			
 			// Обработка нажатия "Купить"
-			document.querySelectorAll('.btn-buy').forEach(button => {
-				button.addEventListener('click', function () {
-					const id = this.dataset.id;
-					const name = this.dataset.name;
-					const price = parseFloat(this.dataset.price);
-					const image = this.dataset.image;
+			document.addEventListener('click', function(e) {
+				if (e.target.classList.contains('btn-buy')) {
+					const button = e.target;
+					const id = button.dataset.id;
+					const name = button.dataset.name;
+					const price = parseFloat(button.dataset.price);
+					const image = button.dataset.image;
 
 					if (cart[id]) {
 						cart[id].quantity += 1;
 					} else {
 						cart[id] = {id, name, price, image, quantity: 1};
-						this.textContent = 'В коршику';      // меняем текст кнопки
-						this.classList.remove('btn-primary');
-						this.classList.add('btn-success');   // для наглядности
+						button.textContent = 'В корзині';
+						button.classList.remove('btn-primary');
+						button.classList.add('btn-success');
 					}
 
 					updateCartTable();
 					cartModal.show();
-				});
+				}
 			});
 
 			// Изменение количества

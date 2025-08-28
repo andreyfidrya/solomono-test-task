@@ -68,6 +68,18 @@ foreach ($products as $product) {
                 <div class="product-price">
                     <div class="sale-price"><?= number_format($product['product_price'], 2) ?>грн</div>
                 </div>
+                <div class="text-center mt-3">
+                    <button type="button" 
+                            class="btn btn-primary btn-buy"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#cartModal"
+                            data-id="<?= $product['id'] ?>"
+                            data-name="<?= htmlspecialchars($product['product_name'], ENT_QUOTES) ?>"
+                            data-price="<?= $product['product_price'] ?>"
+                            data-image="images/<?= htmlspecialchars($product['product_image'], ENT_QUOTES) ?>">
+                        Купити
+                    </button>
+                </div>
             </div>
         </div>
     </div>
