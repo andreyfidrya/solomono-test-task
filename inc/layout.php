@@ -133,6 +133,22 @@ require_once "functions.php";
 					data: { id: categoryId, sort: sort },
 					success: function (response) {
 						$('#products-container').html(response);
+						// формируем новый URL
+						let params = new URLSearchParams(window.location.search);
+						if (categoryId > 0) {
+							params.set('category', categoryId);
+						} else {
+							params.delete('category');
+						}
+
+						if (sort) {
+							params.set('sort', sort);
+						} else {
+							params.delete('sort');
+						}
+
+						let newUrl = window.location.pathname + '?' + params.toString();
+						history.replaceState({}, '', newUrl);
 					},
 					error: function () {
 						alert('Ошибка загрузки товаров');
