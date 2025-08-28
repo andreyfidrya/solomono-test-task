@@ -66,7 +66,10 @@ require_once "functions.php";
 							</div>
 							<h4 class="card-title">КАТЕГОРІЇ</h4>
 						</div>
-						<?= displayCategoriesList($pdo); ?>
+						<?php
+						$currentCategory = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+						echo displayCategoriesList($pdo, $currentCategory);
+						?>
 					</div>
 					<hr class="solid opacity-7">
 					<div class="p-3">
@@ -82,7 +85,7 @@ require_once "functions.php";
 			</div>						
 			<div class="col-lg-3-5 col-xl-4-5">
 				<div class="row row-gutter-sm" id="products-container">
-					<?= renderAllProducts(); ?>								
+						
 				</div>							
 			</div>
 		</div>
@@ -160,6 +163,7 @@ require_once "functions.php";
 
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script>
+		
 		$(document).ready(function () {
 			let currentCategory = 0;
 
@@ -199,12 +203,28 @@ require_once "functions.php";
 				e.preventDefault();
 				currentCategory = $(this).data('id');
 				loadProducts(currentCategory, $('#sort').val());
+
+				// снимаем active у всех и вешаем на выбранную
+				$('.category-link').removeClass('active text-primary');
+				$(this).addClass('active text-primary');
 			});
 
 			// выбор сортировки
 			$('#sort').on('change', function () {
 				loadProducts(currentCategory, $(this).val());
 			});
+
+			// при загрузке страницы проверяем параметры
+		const urlParams = new URLSearchParams(window.location.search);
+		const initialCategory = urlParams.get('category') || 0;
+		const initialSort = urlParams.get('sort') || "";
+
+		currentCategory = initialCategory;
+		$('#sort').val(initialSort);
+
+		// ВСЕГДА грузим товары через AJAX
+		loadProducts(initialCategory, initialSort);
+			
 		});
 		</script>
 		<script>
@@ -282,7 +302,6 @@ require_once "functions.php";
 			});
 		});
 		</script>
-
 		
 	</body>
 </html>

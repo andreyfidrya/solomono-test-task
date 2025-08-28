@@ -62,7 +62,7 @@ class DatabaseSetup
             $insertCategoriesQuery = "INSERT INTO `categories` (`id`, `category_name`) VALUES
             ('1','Фідерні вудилища'),
             ('2','Болонські вудки'),
-            ('3','Матчові вудилища'),
+            ('3','Махові вудилища'),
             ('4','Спінінгові вудилища');";
             $this->pdo->exec($insertCategoriesQuery);
         }

@@ -20,15 +20,16 @@ function getAllCategoriesWithCounts(PDO $pdo) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function displayCategoriesList(PDO $pdo) {
+function displayCategoriesList(PDO $pdo, $currentCategory = null) {
     $categories = getAllCategoriesWithCounts($pdo);
 
     $html = '<div class="card-body">';
     $html .= '<ul class="list list-unstyled mb-0">';
 
     foreach ($categories as $category) {
+        $isActive = ($currentCategory == $category['id']) ? 'active text-primary' : '';
         $html .= '<li>';
-        $html .= '<a href="#" class="category-link" data-id="' . (int)$category['id'] . '">';
+        $html .= '<a href="#" class="category-link ' . $isActive . '" data-id="' . (int)$category['id'] . '">';
         $html .= htmlspecialchars($category['category_name']);
         $html .= ' (' . (int)$category['product_count'] . ')'; // <-- количество товаров
         $html .= '</a>';
