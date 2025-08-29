@@ -222,6 +222,9 @@ require_once "functions.php";
 						alert('Ошибка загрузки товаров');
 					}
 				});
+
+				// Сохраняем корзину в localStorage
+				localStorage.setItem('cart', JSON.stringify(cart));
 			}
 
 			// клик по категории
@@ -257,8 +260,24 @@ require_once "functions.php";
 		document.addEventListener('DOMContentLoaded', function () {
 			let cart = {};
 			const cartModalEl = document.getElementById('cartModal');
-			const cartModal = new bootstrap.Modal(cartModalEl); // создаем один раз
+			const cartModal = new bootstrap.Modal(cartModalEl);
 
+			// ==== Сохранение корзины ====
+			function saveCart() {
+				localStorage.setItem('cart', JSON.stringify(cart));
+			}
+
+			// ==== Загрузка корзины ====
+			function loadCart() {
+				const savedCart = localStorage.getItem('cart');
+				if (savedCart) {
+					cart = JSON.parse(savedCart);
+				}
+				updateCartTable();
+				updateButtons();
+			}
+
+			// ==== Обновление таблицы корзины ====
 			function updateCartTable() {
 				const tbody = document.querySelector('#cartTable tbody');
 				tbody.innerHTML = '';
@@ -283,8 +302,24 @@ require_once "functions.php";
 
 				document.getElementById('cartTotal').textContent = total.toFixed(2) + ' грн';
 			}
-			
-			// Обработка нажатия "Купить"
+
+			// ==== Обновление кнопок "Купити / В корзині" ====
+			function updateButtons() {
+				document.querySelectorAll('.btn-buy').forEach(button => {
+					const id = button.dataset.id;
+					if (cart[id]) {
+						button.textContent = 'В корзині';
+						button.classList.remove('btn-primary');
+						button.classList.add('btn-success');
+					} else {
+						button.textContent = 'Купити';
+						button.classList.remove('btn-success');
+						button.classList.add('btn-primary');
+					}
+				});
+			}
+
+			// ==== Добавление товара ====
 			document.addEventListener('click', function(e) {
 				if (e.target.classList.contains('btn-buy')) {
 					const button = e.target;
@@ -297,35 +332,48 @@ require_once "functions.php";
 						cart[id].quantity += 1;
 					} else {
 						cart[id] = {id, name, price, image, quantity: 1};
-						button.textContent = 'В корзині';
-						button.classList.remove('btn-primary');
-						button.classList.add('btn-success');
 					}
 
 					updateCartTable();
+					updateButtons();
+					saveCart();
 					cartModal.show();
 				}
 			});
 
-			// Изменение количества
+			// ==== Изменение количества ====
 			document.getElementById('cartTable').addEventListener('input', function (e) {
 				if (e.target.classList.contains('cart-qty')) {
 					const id = e.target.dataset.id;
 					let qty = parseInt(e.target.value);
 					if (qty < 1) qty = 1;
 					cart[id].quantity = qty;
-					updateCartTable();
-				}
-			});			
 
-			// Удаление товара
+					updateCartTable();
+					saveCart();
+				}
+			});
+
+			// ==== Удаление товара ====
 			document.getElementById('cartTable').addEventListener('click', function (e) {
 				if (e.target.classList.contains('btn-remove')) {
 					const id = e.target.dataset.id;
 					delete cart[id];
+
 					updateCartTable();
+					updateButtons();
+					saveCart();
 				}
 			});
+
+			// ==== Подхватываем кнопки после AJAX подгрузки товаров ====
+			// (когда get_products.php возвращает товары)
+			$(document).ajaxSuccess(function () {
+				updateButtons();
+			});
+
+			// ==== Первичная загрузка ====
+			loadCart();
 		});
 		</script>
 		
