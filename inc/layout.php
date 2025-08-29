@@ -51,6 +51,32 @@ require_once "functions.php";
 		<!-- Theme Custom CSS -->
 		<link rel="stylesheet" href="css/custom.css">
 
+		<style>
+		/* делаем колонку флексом */
+		.col-sm-6.col-xl-3 {
+			display: flex;
+		}
+
+		/* карточка должна растягиваться */
+		.col-sm-6.col-xl-3 .card {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+
+		/* card-body растягивается */
+		.col-sm-6.col-xl-3 .card-body {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+
+		/* блок с кнопкой уходит вниз */
+		.col-sm-6.col-xl-3 .card-body .text-center {
+			margin-top: auto;
+		}
+		</style>
+
 		<!-- Head Libs -->
 		<script src="vendor/modernizr/modernizr.js"></script>
 

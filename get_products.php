@@ -47,28 +47,29 @@ if (!$products) {
 
 foreach ($products as $product) {
     ?>
-    <div class="col-sm-6 col-xl-3 mb-4">
-        <div class="card card-modern card-modern-alt-padding">
-            <div class="card-body bg-light">
+    
+    <div class="col-sm-6 col-xl-3 mb-4 d-flex"> <!-- добавили d-flex -->
+        <div class="card card-modern card-modern-alt-padding flex-fill d-flex flex-column"> <!-- flex-fill и d-flex flex-column -->
+            <div class="card-body bg-light d-flex flex-column">
                 <div class="image-frame mb-2">
                     <div class="image-frame-wrapper">
                         <a href="ecommerce-products-form.php?id=<?= $product['id'] ?>">
                             <img src="images/<?= htmlspecialchars($product['product_image']) ?>" 
-                                 class="img-fluid" 
-                                 alt="<?= htmlspecialchars($product['product_name']) ?>" />
+                                class="img-fluid" 
+                                alt="<?= htmlspecialchars($product['product_name']) ?>" />
                         </a>
                     </div>
                 </div>
                 <h4 class="text-4 line-height-2 mt-0 mb-2">
                     <a href="ecommerce-products-form.php?id=<?= $product['id'] ?>" 
-                       class="ecommerce-sidebar-link text-color-dark text-color-hover-primary text-decoration-none">
+                    class="ecommerce-sidebar-link text-color-dark text-color-hover-primary text-decoration-none">
                         <?= htmlspecialchars($product['product_name']) ?>
                     </a>
                 </h4>
                 <div class="product-price">
                     <div class="sale-price"><?= number_format($product['product_price'], 2) ?>грн</div>
                 </div>
-                <div class="text-center mt-3">
+                <div class="text-center mt-auto"> <!-- mt-auto для кнопки -->
                     <button type="button" 
                             class="btn btn-primary btn-buy"
                             data-bs-toggle="modal" 
@@ -83,5 +84,6 @@ foreach ($products as $product) {
             </div>
         </div>
     </div>
+    
     <?php
 }
