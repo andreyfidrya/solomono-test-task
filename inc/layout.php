@@ -243,7 +243,7 @@ require_once "functions.php";
 				loadProducts(currentCategory, $(this).val());
 			});
 
-			// при загрузке страницы проверяем параметры
+		// при загрузке страницы проверяем параметры
 		const urlParams = new URLSearchParams(window.location.search);
 		const initialCategory = urlParams.get('category') || 0;
 		const initialSort = urlParams.get('sort') || "";
