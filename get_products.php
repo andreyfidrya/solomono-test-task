@@ -66,6 +66,12 @@ foreach ($products as $product) {
                         <?= htmlspecialchars($product['product_name']) ?>
                     </a>
                 </h4>
+                <div class="product-test">
+                    <div class="sale-test">Тест: <?= $product['product_test'] ?> гр</div>
+                </div>
+                <div class="product-length">
+                    <div class="sale-length">Длина: <?= $product['product_length'] ?> мм</div>
+                </div>
                 <div class="product-price">
                     <div class="sale-price"><?= number_format($product['product_price'], 2) ?>грн</div>
                 </div>
