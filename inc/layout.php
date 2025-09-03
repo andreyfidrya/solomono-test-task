@@ -100,7 +100,7 @@ require_once "functions.php";
 					<hr class="solid opacity-7">
 					<div class="p-3">
 						<label for="sort" class="form-label fw-bold">Сортування:</label>
-						<select id="sort" class="form-select" onchange="sortProducts(this.value)">
+						<select id="sort" class="form-select">
 							<option value="">Зробіть вибір...</option>
 							<option value="price_asc">Спочатку дешеві</option>
 							<option value="alphabet">По алфавіту</option>
