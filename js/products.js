@@ -60,9 +60,7 @@ $(document).ready(function () {
 			// снимаем active у всех и вешаем на выбранную
 			$('.category-link').removeClass('active text-primary');
 			$(this).addClass('active text-primary');
-
-			// показываем/скрываем хедер с кнопкой
-			toggleFiltersHeader();
+			
 			});
 
 			// выбор сортировки
@@ -76,10 +74,7 @@ $(document).ready(function () {
 			const initialSort = urlParams.get('sort') || "";
 
 			currentCategory = initialCategory;
-			$('#sort').val(initialSort);
-
-			// показываем/скрываем хедер с кнопкой при загрузке
-			toggleFiltersHeader();
+			$('#sort').val(initialSort);			
 
 			// ВСЕГДА грузим товары через AJAX
 			loadProducts(initialCategory, initialSort);
