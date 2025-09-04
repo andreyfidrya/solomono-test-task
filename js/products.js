@@ -25,6 +25,12 @@ $(document).ready(function () {
 
 						let newUrl = window.location.pathname + '?' + params.toString();
 						history.replaceState({}, '', newUrl);
+
+						// ОБНОВЛЯЕМ ПОДСВЕТКУ КАТЕГОРИИ
+						$('.category-link').removeClass('active text-primary');
+						if (categoryId > 0) {
+							$('.category-link[data-id="' + categoryId + '"]').addClass('active text-primary');
+						}
 					},
 					error: function () {
 						alert('Ошибка загрузки товаров');
