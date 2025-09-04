@@ -46,8 +46,9 @@ if (!$products) {
 }
 
 foreach ($products as $product) {
-    ?>
+    ?> 
     
+
     <div class="col-sm-6 col-xl-3 mb-4 d-flex"> <!-- добавили d-flex -->
         <div class="card card-modern card-modern-alt-padding flex-fill d-flex flex-column"> <!-- flex-fill и d-flex flex-column -->
             <div class="card-body bg-light d-flex flex-column">
@@ -69,23 +70,25 @@ foreach ($products as $product) {
                 <div class="product-test">
                     <div class="sale-test">Тест: <?= $product['product_test'] ?> гр</div>
                 </div>
-                <div class="product-length">
+                <div class="product-length mb-3">
                     <div class="sale-length">Длина: <?= $product['product_length'] ?> мм</div>
                 </div>
-                <div class="product-price">
-                    <div class="sale-price"><?= number_format($product['product_price'], 2) ?>грн</div>
-                </div>
-                <div class="text-center mt-auto"> <!-- mt-auto для кнопки -->
-                    <button type="button" 
-                            class="btn btn-primary btn-buy"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#cartModal"
-                            data-id="<?= $product['id'] ?>"
-                            data-name="<?= htmlspecialchars($product['product_name'], ENT_QUOTES) ?>"
-                            data-price="<?= $product['product_price'] ?>"
-                            data-image="images/<?= htmlspecialchars($product['product_image'], ENT_QUOTES) ?>">
-                        Купити
-                    </button>
+                <div class="mt-auto">
+                    <div class="product-price product-price d-flex justify-content-center mb-3">
+                        <div class="sale-price"><?= number_format($product['product_price'], 2) ?> грн</div>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" 
+                                class="btn btn-primary btn-buy"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#cartModal"
+                                data-id="<?= $product['id'] ?>"
+                                data-name="<?= htmlspecialchars($product['product_name'], ENT_QUOTES) ?>"
+                                data-price="<?= $product['product_price'] ?>"
+                                data-image="images/<?= htmlspecialchars($product['product_image'], ENT_QUOTES) ?>">
+                            Купити
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
