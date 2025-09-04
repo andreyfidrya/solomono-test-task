@@ -55,12 +55,7 @@ $(document).ready(function () {
 			$(document).on('click', '.category-link', function (e) {
 				e.preventDefault();
 				currentCategory = parseInt($(this).data('id')); // делаем числом
-				loadProducts(currentCategory, $('#sort').val());
-
-			// снимаем active у всех и вешаем на выбранную
-			$('.category-link').removeClass('active text-primary');
-			$(this).addClass('active text-primary');
-			
+				loadProducts(currentCategory, $('#sort').val());		
 			});
 
 			// выбор сортировки
@@ -73,7 +68,6 @@ $(document).ready(function () {
 			const initialCategory = parseInt(urlParams.get('category')) || 0;
 			const initialSort = urlParams.get('sort') || "";
 
-			currentCategory = initialCategory;
 			$('#sort').val(initialSort);			
 
 			// ВСЕГДА грузим товары через AJAX
