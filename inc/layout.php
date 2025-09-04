@@ -89,7 +89,7 @@ require_once "functions.php";
 			<div class="col-lg-3-5 col-xl-4-5">
 
 				<!-- Хедер с кнопкой фильтров -->
-				<div class="category-filters-hidden mb-3" id="filtersHeader">
+				<div class="category-filters-hidden mb-3 d-none" id="filtersHeader">
 					<div class="category-wrapper-filters">
 						<div class="category-container-filters">
 							<div class="category-wrapper-btn-filters">			

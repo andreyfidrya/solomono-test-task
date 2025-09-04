@@ -3,6 +3,9 @@ $(document).ready(function () {
 
 			// загрузка товаров (категория + сортировка)
 			function loadProducts(categoryId = 0, sort = "") {
+				categoryId = parseInt(categoryId) || 0; // ← всегда число
+    			currentCategory = categoryId; // обновляем текущее
+
 				$.ajax({
 					url: 'get_products.php',
 					type: 'GET',
@@ -36,6 +39,8 @@ $(document).ready(function () {
 						if (categoryId > 0) {
 							$('.category-link[data-id="' + categoryId + '"]').addClass('active text-primary');
 						}
+
+						toggleFiltersHeader();
 					},
 					error: function () {
 						alert('Ошибка загрузки товаров');
@@ -49,12 +54,15 @@ $(document).ready(function () {
 			// клик по категории
 			$(document).on('click', '.category-link', function (e) {
 				e.preventDefault();
-				currentCategory = $(this).data('id');
+				currentCategory = parseInt($(this).data('id')); // делаем числом
 				loadProducts(currentCategory, $('#sort').val());
 
-				// снимаем active у всех и вешаем на выбранную
-				$('.category-link').removeClass('active text-primary');
-				$(this).addClass('active text-primary');
+			// снимаем active у всех и вешаем на выбранную
+			$('.category-link').removeClass('active text-primary');
+			$(this).addClass('active text-primary');
+
+			// показываем/скрываем хедер с кнопкой
+			toggleFiltersHeader();
 			});
 
 			// выбор сортировки
@@ -62,15 +70,26 @@ $(document).ready(function () {
 				loadProducts(currentCategory, $(this).val());
 			});
 
-		// при загрузке страницы проверяем параметры
-		const urlParams = new URLSearchParams(window.location.search);
-		const initialCategory = urlParams.get('category') || 0;
-		const initialSort = urlParams.get('sort') || "";
+			// при загрузке страницы проверяем параметры
+			const urlParams = new URLSearchParams(window.location.search);
+			const initialCategory = parseInt(urlParams.get('category')) || 0;
+			const initialSort = urlParams.get('sort') || "";
 
-		currentCategory = initialCategory;
-		$('#sort').val(initialSort);
+			currentCategory = initialCategory;
+			$('#sort').val(initialSort);
 
-		// ВСЕГДА грузим товары через AJAX
-		loadProducts(initialCategory, initialSort);
+			// показываем/скрываем хедер с кнопкой при загрузке
+			toggleFiltersHeader();
+
+			// ВСЕГДА грузим товары через AJAX
+			loadProducts(initialCategory, initialSort);
 			
-		});
+			// функция для показа/скрытия кнопки фильтров
+			function toggleFiltersHeader() {
+				if (currentCategory > 0) {
+					$('#filtersHeader').removeClass('d-none');
+				} else {
+					$('#filtersHeader').addClass('d-none');
+				}
+			}
+			});
