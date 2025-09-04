@@ -23,7 +23,12 @@ $(document).ready(function () {
 							params.delete('sort');
 						}
 
-						let newUrl = window.location.pathname + '?' + params.toString();
+						// Только если есть параметры, добавляем '?' и строку запроса
+						let newUrl = window.location.pathname;
+						let queryString = params.toString();
+						if (queryString) {
+							newUrl += '?' + queryString;
+						}
 						history.replaceState({}, '', newUrl);
 
 						// ОБНОВЛЯЕМ ПОДСВЕТКУ КАТЕГОРИИ
