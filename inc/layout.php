@@ -87,7 +87,6 @@ require_once "functions.php";
 				</div>
 			</div>						
 			<div class="col-lg-3-5 col-xl-4-5">
-
 				<!-- Хедер с кнопкой фильтров -->
 				<div class="category-filters-hidden mb-3 d-none" id="filtersHeader">
 					<div class="category-wrapper-filters">
@@ -100,7 +99,6 @@ require_once "functions.php";
 						</div>
 					</div>
 				</div>
-
 				<!-- Список товаров -->
 				<div class="row row-gutter-sm" id="products-container">
 						
@@ -145,6 +143,29 @@ require_once "functions.php";
 			</div>
 		</div>
 
+		<div id="filters_backdrop" class="backdrop">
+			<div id="filters_modal" class="ns-modal modal-scroll">
+				<div class="modal-container">
+					<button id="close_modal_filters_category" class="modal-btn-close"></button>
+					<h2 class="modal-title">фильтры</h2>
+				</div>
+				<div class="modal-wrapper-filters modal-wrapper-filters-taste">
+					<h3 class="modal-filters-title">Длина:</h3>				
+					<div class="modal-filters-container-btn">
+						
+					</div>
+					
+					<h3 class="modal-filters-title">Тест:</h3>
+					<div class="modal-filters-container-btn">					
+						
+					</div>
+					<div class="modal-box-btns">						
+						<button id="filter_modal_reset" class="modal-btn-remove-filters" type="button">сбросить фильтры</button>  
+						<button id="filter_modal_apply" class="modal-btn" type="button">Применить</button>
+					</div>		
+				</div>
+			</div>	
+		</div>
 
 		<!-- Vendor -->
 		<script src="vendor/jquery/jquery.js"></script>
@@ -182,7 +203,7 @@ require_once "functions.php";
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		
 		<script src="js/products.js"></script>
-
 		<script src="js/cart.js"></script>
+		<script src="js/filters.js"></script>
 	</body>
 </html>

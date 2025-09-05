@@ -1,28 +1,28 @@
-        /* делаем колонку флексом */
-		.col-sm-6.col-xl-3 {
-			display: flex;
-		}
+    /* делаем колонку флексом */
+	.col-sm-6.col-xl-3 {
+		display: flex;
+	}
 
-		/* карточка должна растягиваться */
-		.col-sm-6.col-xl-3 .card {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-		}
+	/* карточка должна растягиваться */
+	.col-sm-6.col-xl-3 .card {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
 
-		/* card-body растягивается */
-		.col-sm-6.col-xl-3 .card-body {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-		}
+	/* card-body растягивается */
+	.col-sm-6.col-xl-3 .card-body {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
 
-		/* блок с кнопкой уходит вниз */
-		.col-sm-6.col-xl-3 .card-body .text-center {
-			margin-top: auto;
-		}
+	/* блок с кнопкой уходит вниз */
+	.col-sm-6.col-xl-3 .card-body .text-center {
+		margin-top: auto;
+	}
 
-		.category-btn-filters {
+	.category-btn-filters {
 		padding: 18px 42px 18px 30px;
 		color: #000;
 		text-align: center;
@@ -40,4 +40,177 @@
 		background-repeat: no-repeat;
 		background-position: center right;
 		background-image: url(../img/Filter.svg);
-		}
+	}
+
+	.backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: none;
+		z-index: 999;
+		background: rgba(0, 0, 0, 0.30);
+	}
+
+	@media screen and (min-width: 1200px) {
+    .ns-modal {         
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 790px;
+        height: auto;
+        max-height: 100%;
+        background-color: white;
+    }
+	}
+
+	.modal-container {
+		position: relative;
+		padding: 50px 30px 30px 50px;
+	}
+
+	.modal-btn-close {
+		position: absolute;
+		top: 30px;
+		right: 30px;
+		padding: 0;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		transition: 0.3s;
+		outline: none;
+		border: none;
+		z-index: 999;
+		cursor: pointer;
+		background-color: #CACACA;
+		background-size: 13px 12px;
+		background-repeat: no-repeat;
+		/* background-position: center; */
+		background-position: 49% center;
+		background-image: url(../img/categories/Cross.svg);
+	}
+
+	.modal-btn-close:hover {
+    	background-color: #000000;
+	}
+
+	.modal-title {
+		color: #000;
+		font-family: Gilroy;
+		font-size: 22px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+		letter-spacing: 2.2px;
+		text-transform: uppercase;
+	}
+
+	.modal-wrapper-filters {
+		position: relative;
+		margin-top: 30px;
+		padding-bottom: 31px;
+		/* border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
+	}
+
+	.modal-wrapper-filters::after {
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 1px;
+		bottom: 0;
+		left: 0;
+		background-color: rgba(0, 0, 0, 0.2);
+		transform: scaleY(0.5);
+	}
+
+	.modal-filters-title {
+		color: #000;
+		font-family: Gilroy;
+		font-size: 20px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+		letter-spacing: 1px;
+		margin-left: 50px;
+	}
+
+	.modal-filters-container-btn {
+		display: flex;
+		flex-wrap: wrap;
+		margin-top: 30px;
+		margin-left: 50px;
+		gap: 20px;
+	}
+
+	.modal-filters-container-btn > div {
+		flex-shrink: 0;
+	}
+
+	.modal-box-btns {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		margin-top: 20px;
+		margin-right: 20px;
+		gap: 50px;
+		flex-wrap: wrap;
+	}
+
+	.modal-btn {
+		padding: 16px 32px;
+		color: #FFF;
+		text-align: center;
+		font-family: Gilroy;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+		letter-spacing: 0.75px;
+		text-transform: uppercase;
+		border-radius: 100px;
+		background: #000;
+		border: none;
+		outline: none;
+		transition: all .3s;
+		cursor: pointer;
+	}
+
+	.modal-btn:hover {
+		background-color: #000000CF;
+	}
+
+	.modal-box-btns {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		margin-top: 20px;
+		margin-right: 20px;
+		gap: 50px;
+		flex-wrap: wrap;
+	}
+
+	.modal-btn-remove-filters {
+		padding: 6px 0px 6px 0px;
+		color: #000;
+		text-align: right;
+		font-family: Gilroy;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+		letter-spacing: 0.75px;
+		text-transform: uppercase;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		border-bottom: 1px solid #000;
+		transition: all .3s;
+		cursor: pointer;
+	}
+
+	.modal-btn-remove-filters:hover {
+		border-color: transparent;
+	}
+
