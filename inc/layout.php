@@ -149,16 +149,12 @@ require_once "functions.php";
 					<button id="close_modal_filters_category" class="modal-btn-close"></button>
 					<h2 class="modal-title">фильтры</h2>
 				</div>
-				<div class="modal-wrapper-filters modal-wrapper-filters-taste">
+				<div class="modal-wrapper-filters modal-wrapper-filters-rods">
 					<h3 class="modal-filters-title">Длина:</h3>				
-					<div class="modal-filters-container-btn">
-						
-					</div>
-					
+    				<div id="filter_lengths" class="modal-filters-container-btn"></div>
+    
 					<h3 class="modal-filters-title">Тест:</h3>
-					<div class="modal-filters-container-btn">					
-						
-					</div>
+					<div id="filter_tests" class="modal-filters-container-btn"></div>
 					<div class="modal-box-btns">						
 						<button id="filter_modal_reset" class="modal-btn-remove-filters" type="button">сбросить фильтры</button>  
 						<button id="filter_modal_apply" class="modal-btn" type="button">Применить</button>
@@ -205,5 +201,6 @@ require_once "functions.php";
 		<script src="js/products.js"></script>
 		<script src="js/cart.js"></script>
 		<script src="js/filters.js"></script>
+		
 	</body>
 </html>

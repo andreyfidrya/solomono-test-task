@@ -42,5 +42,24 @@ function displayCategoriesList(PDO $pdo, $currentCategory = null) {
     return $html;
 }
 
+function getFiltersByCategory(PDO $pdo, int $categoryId) {
+    $filters = [
+        'lengths' => [],
+        'tests'   => []
+    ];
+
+    $sql = "SELECT DISTINCT product_length FROM products WHERE category_id = :categoryId ORDER BY product_length ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['categoryId' => $categoryId]);
+    $filters['lengths'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    $sql = "SELECT DISTINCT product_test FROM products WHERE category_id = :categoryId ORDER BY product_test ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['categoryId' => $categoryId]);
+    $filters['tests'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    return $filters;
+}
+
 
 

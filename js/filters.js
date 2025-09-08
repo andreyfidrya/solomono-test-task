@@ -15,6 +15,50 @@ function initializeModalFiltersCategory(){
     $modal.removeClass("open");			
     }
 
-    $document.on("click", "#close_modal_filters_category", closeModal);
+    $document.on("click", "#close_modal_filters_category", closeModal);    
     }
 initializeModalFiltersCategory();
+
+// загружаем фильтры только при открытии модалки
+$('#open_modal_filters_category').on('click', function() {
+    if (currentCategory > 0) {   // ← используем ту же переменную
+        loadFilters(currentCategory);
+    }
+});
+
+function loadFilters(categoryId) {
+    console.log("loadFilters, categoryId:", categoryId); // для отладки
+    $.ajax({
+        url: 'get_filters.php',
+        type: 'GET',
+        data: { id: categoryId },
+        success: function(response) {
+            console.log("get_filters response:", response); // проверяем JSON 
+            let data = JSON.parse(response);
+
+            // контейнеры фильтров по id
+            let lengthContainer = $('#filter_lengths');
+            let testContainer   = $('#filter_tests');
+
+            lengthContainer.empty();
+            testContainer.empty();
+
+            if (data.lengths.length > 0) {
+                data.lengths.forEach(function(len) {
+                    lengthContainer.append(
+                        `<button class="filter-btn" data-type="length" data-value="${len}">${len}</button>`
+                    );
+                });
+            }
+
+            if (data.tests.length > 0) {
+                data.tests.forEach(function(test) {
+                    testContainer.append(
+                        `<button class="filter-btn" data-type="test" data-value="${test}">${test}</button>`
+                    );
+                });
+            }
+        }
+    });
+}		
+		      

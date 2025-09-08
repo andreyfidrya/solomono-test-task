@@ -1,6 +1,6 @@
-$(document).ready(function () {
-			let currentCategory = 0;
+let currentCategory = 0;
 
+$(document).ready(function () {		
 			// загрузка товаров (категория + сортировка)
 			function loadProducts(categoryId = 0, sort = "") {
 				categoryId = parseInt(categoryId) || 0; // ← всегда число
@@ -55,8 +55,8 @@ $(document).ready(function () {
 			$(document).on('click', '.category-link', function (e) {
 				e.preventDefault();
 				currentCategory = parseInt($(this).data('id')); // делаем числом
-				loadProducts(currentCategory, $('#sort').val());		
-			});
+				loadProducts(currentCategory, $('#sort').val());						
+			});			
 
 			// выбор сортировки
 			$('#sort').on('change', function () {
