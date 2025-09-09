@@ -67,7 +67,7 @@ jQuery(document).on("click", ".filter-btn", function () {
     jQuery(this).toggleClass("active");
 });
 
-jQuery("#filter_modal_reset button").on("click", function () {
+jQuery("#filter_modal_reset").on("click", function () {
     jQuery(".filter-btn").removeClass("active");    
 });
 		      
