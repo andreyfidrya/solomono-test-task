@@ -104,7 +104,8 @@ $(document).on("click", ".filter-btn", function () {
 });
 
 jQuery("#filter_modal_reset").on("click", function () {
-    jQuery(".filter-btn").removeClass("active");    
+    jQuery(".filter-btn").removeClass("active");
+    updateApplyButtonCount();    
 });
 		      
 $('#filter_modal_apply').on('click', function () {
