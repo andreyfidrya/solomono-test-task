@@ -56,6 +56,13 @@ if (!$products) {
     exit;
 }
 
+$countOnly = isset($_GET['count_only']) && $_GET['count_only'] == 1;
+
+if ($countOnly) {
+    echo count($products);
+    exit;
+}
+
 foreach ($products as $product) {
     ?>    
 

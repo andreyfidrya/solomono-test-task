@@ -156,8 +156,8 @@ require_once "functions.php";
 					<h3 class="modal-filters-title">Тест:</h3>
 					<div id="filter_tests" class="modal-filters-container-btn"></div>
 					<div class="modal-box-btns">						
-						<button id="filter_modal_reset" class="modal-btn-remove-filters" type="button">сбросить фильтры</button>  
-						<button id="filter_modal_apply" class="modal-btn" type="button">Применить</button>
+						<button id="filter_modal_reset" class="modal-btn-remove-filters" type="button">очистити фільтри</button>  
+						<button id="filter_modal_apply" class="modal-btn" type="button">Застосувати</button>
 					</div>		
 				</div>
 			</div>	

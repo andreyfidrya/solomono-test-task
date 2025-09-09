@@ -24,6 +24,7 @@ initializeModalFiltersCategory();
 $('#open_modal_filters_category').on('click', function() {
     if (currentCategory > 0) {   // ← используем ту же переменную
         loadFilters(currentCategory);
+        setTimeout(updateApplyButtonCount, 100); // даем время на отрисовку кнопок
     }
 });
 
@@ -63,9 +64,43 @@ function loadFilters(categoryId) {
     });
 }
 
-// делегирование кликов на кнопки фильтров
-jQuery(document).on("click", ".filter-btn", function () {
-    jQuery(this).toggleClass("active");
+function updateApplyButtonCount() {
+    let selectedLengths = [];
+    let selectedTests = [];
+
+    $('#filter_lengths .filter-btn.active').each(function () {
+        selectedLengths.push($(this).data('value'));
+    });
+
+    $('#filter_tests .filter-btn.active').each(function () {
+        selectedTests.push($(this).data('value'));
+    });
+
+    let filters = {
+        lengths: selectedLengths,
+        tests: selectedTests
+    };
+
+    // AJAX-запрос для подсчета товаров
+    $.ajax({
+        url: 'get_products.php',
+        type: 'GET',
+        data: { 
+            id: currentCategory, 
+            filters: JSON.stringify(filters),
+            count_only: 1
+        },
+        success: function(response) {
+            let count = parseInt(response);
+            $('#filter_modal_apply').text(`Застосувати (${count})`);
+        }
+    });
+}
+
+// делегирование клика по кнопкам фильтров
+$(document).on("click", ".filter-btn", function () {
+    $(this).toggleClass("active");
+    updateApplyButtonCount();
 });
 
 jQuery("#filter_modal_reset").on("click", function () {
