@@ -46,7 +46,7 @@ function loadFilters(categoryId) {
             if (data.lengths.length > 0) {
                 data.lengths.forEach(function(len) {
                     lengthContainer.append(
-                        `<button class="filter-btn" data-type="length" data-value="${len}">${len}</button>`
+                        `<button class="filter-btn" data-type="length" data-value="${len}">${len} мм</button>`
                     );
                 });
             }
@@ -54,7 +54,7 @@ function loadFilters(categoryId) {
             if (data.tests.length > 0) {
                 data.tests.forEach(function(test) {
                     testContainer.append(
-                        `<button class="filter-btn" data-type="test" data-value="${test}">${test}</button>`
+                        `<button class="filter-btn" data-type="test" data-value="${test}">${test} гр</button>`
                     );
                 });
             }
