@@ -214,3 +214,17 @@
 		border-color: transparent;
 	}
 
+	.modal-filters-container-btn button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+	}
+
+	.filter-btn.active {
+	background-color: #1685e0;
+    color: #fff;
+  	}
+	
+

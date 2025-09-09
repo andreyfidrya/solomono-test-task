@@ -60,5 +60,14 @@ function loadFilters(categoryId) {
             }
         }
     });
-}		
+}
+
+// делегирование кликов на кнопки фильтров
+jQuery(document).on("click", ".filter-btn", function () {
+    jQuery(this).toggleClass("active");
+});
+
+jQuery("#filter_modal_reset button").on("click", function () {
+    jQuery(".filter-btn").removeClass("active");    
+});
 		      
