@@ -15,7 +15,8 @@ function initializeModalFiltersCategory(){
     $modal.removeClass("open");			
     }
 
-    $document.on("click", "#close_modal_filters_category", closeModal);    
+    $document.on("click", "#close_modal_filters_category", closeModal);
+    $document.on("click", "#filter_modal_apply", closeModal);    
     }
 initializeModalFiltersCategory();
 
@@ -71,3 +72,27 @@ jQuery("#filter_modal_reset").on("click", function () {
     jQuery(".filter-btn").removeClass("active");    
 });
 		      
+$('#filter_modal_apply').on('click', function () {
+    let selectedLengths = [];
+    let selectedTests = [];
+
+    $('#filter_lengths .filter-btn.active').each(function () {
+        selectedLengths.push($(this).data('value'));
+    });
+
+    $('#filter_tests .filter-btn.active').each(function () {
+        selectedTests.push($(this).data('value'));
+    });
+
+    let filters = {
+        lengths: selectedLengths,
+        tests: selectedTests
+    };
+
+    // загружаем товары с фильтрами
+    loadProducts(currentCategory, $('#sort').val(), filters);
+
+    // закрываем модалку
+    $('#filters_backdrop').fadeOut();
+    $('#filters_modal').removeClass('open');
+});

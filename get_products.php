@@ -6,12 +6,29 @@ $categoryId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 // Получаем сортировку из GET
 $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+$filters    = isset($_GET['filters']) ? json_decode($_GET['filters'], true) : [];
 
 $sql = "SELECT * FROM products";
+$params = [];
 
 // Фильтр по категории
 if ($categoryId > 0) {
-    $sql .= " WHERE category_id = :category_id";
+    $sql .= " WHERE category_id = ?";
+    $params[] = $categoryId;
+}
+
+// фильтрация по длине
+if (!empty($filters['lengths'])) {
+    $placeholders = implode(',', array_fill(0, count($filters['lengths']), '?'));
+    $sql .= " AND product_length IN ($placeholders)";
+    $params = array_merge($params, $filters['lengths']);
+}
+
+// фильтрация по тесту
+if (!empty($filters['tests'])) {
+    $placeholders = implode(',', array_fill(0, count($filters['tests']), '?'));
+    $sql .= " AND product_test IN ($placeholders)";
+    $params = array_merge($params, $filters['tests']);
 }
 
 // Сортировка
@@ -30,13 +47,7 @@ switch ($sort) {
 }
 
 $stmt = $pdo->prepare($sql);
-
-if ($categoryId > 0) {
-    $stmt->execute(['category_id' => $categoryId]);
-} else {
-    $stmt->execute();
-}
-
+$stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Возвращаем HTML (фрагмент карточек)
@@ -46,8 +57,7 @@ if (!$products) {
 }
 
 foreach ($products as $product) {
-    ?> 
-    
+    ?>    
 
     <div class="col-sm-6 col-xl-3 mb-4 d-flex"> <!-- добавили d-flex -->
         <div class="card card-modern card-modern-alt-padding flex-fill d-flex flex-column"> <!-- flex-fill и d-flex flex-column -->
