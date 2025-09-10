@@ -29,9 +29,12 @@ function displayCategoriesList(PDO $pdo, $currentCategory = null) {
     foreach ($categories as $category) {
         $isActive = ($currentCategory == $category['id']) ? 'active text-primary' : '';
         $html .= '<li>';
-        $html .= '<a href="#" class="category-link ' . $isActive . '" data-id="' . (int)$category['id'] . '">';
+        $html .= '<a href="#" 
+             class="category-link ' . $isActive . '" 
+             data-id="' . (int)$category['id'] . '" 
+             data-name="' . htmlspecialchars($category['category_name'], ENT_QUOTES) . '">';
         $html .= htmlspecialchars($category['category_name']);
-        $html .= ' (' . (int)$category['product_count'] . ')'; // <-- количество товаров
+        $html .= ' (' . (int)$category['product_count'] . ')'; // оставляем как есть для отображения в списке
         $html .= '</a>';
         $html .= '</li>';
     }

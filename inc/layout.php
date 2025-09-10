@@ -147,10 +147,13 @@ require_once "functions.php";
 			<div id="filters_modal" class="ns-modal modal-scroll">
 				<div class="modal-container">
 					<button id="close_modal_filters_category" class="modal-btn-close"></button>
-					<h2 class="modal-title">фильтры</h2>
+					<h2 class="modal-title">фільтри</h2>
 				</div>
 				<div class="modal-wrapper-filters modal-wrapper-filters-rods">
-					<h3 class="modal-filters-title">Длина:</h3>				
+					<h3 class="modal-filters-title">Категорія:</h3>
+					<div id="filter_category_title" class="modal-category-title"></div>
+					
+					<h3 class="modal-filters-title">Довжина:</h3>				
     				<div id="filter_lengths" class="modal-filters-container-btn"></div>
     
 					<h3 class="modal-filters-title">Тест:</h3>

@@ -24,6 +24,8 @@ initializeModalFiltersCategory();
 $('#open_modal_filters_category').on('click', function() {
     if (currentCategory > 0) {   // ← используем ту же переменную
         loadFilters(currentCategory);
+        let categoryName = $('.category-link[data-id="' + currentCategory + '"]').data('name');
+        $('#filter_category_title').text(categoryName); 
         setTimeout(updateApplyButtonCount, 100); // даем время на отрисовку кнопок
     }
 });
@@ -37,11 +39,12 @@ function loadFilters(categoryId) {
             let data = JSON.parse(response);
 
             // контейнеры фильтров по id
+            
             let lengthContainer = $('#filter_lengths');
-            let testContainer   = $('#filter_tests');
+            let testContainer   = $('#filter_tests');            
 
             lengthContainer.empty();
-            testContainer.empty();
+            testContainer.empty();            
 
             if (data.lengths.length > 0) {
                 data.lengths.forEach(function(len) {
