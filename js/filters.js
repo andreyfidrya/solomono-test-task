@@ -105,6 +105,9 @@ function updateApplyButtonCount() {
         },
         success: function(response) {
             let count = parseInt(response);
+            if (isNaN(count)) {
+                count = 0;
+            }
             $('#filter_modal_apply').text(`Застосувати (${count})`);
         }
     });
