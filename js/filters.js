@@ -70,7 +70,7 @@ function loadFilters(categoryId) {
                         `<button class="filter-btn" data-type="test" data-value="${test}">${test} гр</button>`
                     );
                 });
-            }
+            }                        
         }
     });
 }
