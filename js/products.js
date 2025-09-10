@@ -30,8 +30,14 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
                 params.delete('sort');
             }
 
-            if (filters && (filters.lengths?.length || filters.tests?.length)) {
-				if (filters.lengths?.length) {
+            if (filters && (filters.brands?.length || filters.lengths?.length || filters.tests?.length)) {
+				if (filters.brands?.length) {
+					params.set('brands', filters.brands.join(','));
+				} else {
+					params.delete('brands');
+				}
+                
+                if (filters.lengths?.length) {
 					params.set('lengths', filters.lengths.join(','));
 				} else {
 					params.delete('lengths');
@@ -43,7 +49,8 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
 					params.delete('tests');
 				}
 			} else {
-				params.delete('lengths');
+				params.delete('brands');
+                params.delete('lengths');
 				params.delete('tests');
 			}
 
