@@ -17,6 +17,13 @@ if ($categoryId > 0) {
     $params[] = $categoryId;
 }
 
+// фильтрация по бренду
+if (!empty($filters['brands'])) {
+    $placeholders = implode(',', array_fill(0, count($filters['brands']), '?'));
+    $sql .= " AND product_brand IN ($placeholders)";
+    $params = array_merge($params, $filters['brands']);
+}
+
 // фильтрация по длине
 if (!empty($filters['lengths'])) {
     $placeholders = implode(',', array_fill(0, count($filters['lengths']), '?'));

@@ -47,10 +47,16 @@ function displayCategoriesList(PDO $pdo, $currentCategory = null) {
 
 function getFiltersByCategory(PDO $pdo, int $categoryId) {
     $filters = [
+        'brands' => [],
         'lengths' => [],
         'tests'   => []
     ];
 
+    $sql = "SELECT DISTINCT product_brand FROM products WHERE category_id = :categoryId ORDER BY product_brand ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['categoryId' => $categoryId]);
+    $filters['brands'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    
     $sql = "SELECT DISTINCT product_length FROM products WHERE category_id = :categoryId ORDER BY product_length ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['categoryId' => $categoryId]);

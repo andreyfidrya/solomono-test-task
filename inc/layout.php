@@ -153,6 +153,9 @@ require_once "functions.php";
 					<h3 class="modal-filters-title">Категорія:</h3>
 					<div id="filter_category_title" class="modal-category-title"></div>
 					
+					<h3 class="modal-filters-title">Бренди:</h3>				
+    				<div id="filter_brands" class="modal-filters-container-btn"></div>
+
 					<h3 class="modal-filters-title">Довжина:</h3>				
     				<div id="filter_lengths" class="modal-filters-container-btn"></div>
     

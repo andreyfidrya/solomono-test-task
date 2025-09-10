@@ -41,10 +41,20 @@ function loadFilters(categoryId) {
             // контейнеры фильтров по id
             
             let lengthContainer = $('#filter_lengths');
-            let testContainer   = $('#filter_tests');            
+            let testContainer   = $('#filter_tests'); 
+            let brandContainer   = $('#filter_brands');            
 
             lengthContainer.empty();
-            testContainer.empty();            
+            testContainer.empty();
+            brandContainer.empty();
+            
+            if (data.brands.length > 0) {
+                data.brands.forEach(function(brand) {
+                    brandContainer.append(
+                        `<button class="filter-btn" data-type="brand" data-value="${brand}">${brand} </button>`
+                    );
+                });
+            }
 
             if (data.lengths.length > 0) {
                 data.lengths.forEach(function(len) {
@@ -66,11 +76,12 @@ function loadFilters(categoryId) {
 }
 
 function updateApplyButtonCount() {
+    let selectedBrands = [];
     let selectedLengths = [];
     let selectedTests = [];
 
-    $('#filter_lengths .filter-btn.active').each(function () {
-        selectedLengths.push($(this).data('value'));
+    $('#filter_brands .filter-btn.active').each(function () {
+        selectedBrands.push($(this).data('value'));
     });
 
     $('#filter_tests .filter-btn.active').each(function () {
@@ -78,6 +89,7 @@ function updateApplyButtonCount() {
     });
 
     let filters = {
+        brands: selectedBrands,
         lengths: selectedLengths,
         tests: selectedTests
     };
@@ -110,8 +122,13 @@ jQuery("#filter_modal_reset").on("click", function () {
 });
 		      
 $('#filter_modal_apply').on('click', function () {
+    let selectedBrands = [];
     let selectedLengths = [];
     let selectedTests = [];
+
+    $('#filter_brands .filter-btn.active').each(function () {
+        selectedBrands.push($(this).data('value'));
+    });
 
     $('#filter_lengths .filter-btn.active').each(function () {
         selectedLengths.push($(this).data('value'));
@@ -122,6 +139,7 @@ $('#filter_modal_apply').on('click', function () {
     });
 
     let filters = {
+        brands: selectedBrands,
         lengths: selectedLengths,
         tests: selectedTests
     };
