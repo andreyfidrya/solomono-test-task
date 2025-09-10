@@ -84,6 +84,10 @@ function updateApplyButtonCount() {
         selectedBrands.push($(this).data('value'));
     });
 
+    $('#filter_lengths .filter-btn.active').each(function () {   // ← ЭТОГО У ВАС НЕ ХВАТАЛО
+        selectedLengths.push($(this).data('value'));
+    });
+
     $('#filter_tests .filter-btn.active').each(function () {
         selectedTests.push($(this).data('value'));
     });
