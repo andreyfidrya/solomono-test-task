@@ -28,14 +28,12 @@ $('#open_modal_filters_category').on('click', function() {
     }
 });
 
-function loadFilters(categoryId) {
-    console.log("loadFilters, categoryId:", categoryId); // для отладки
+function loadFilters(categoryId) {    
     $.ajax({
         url: 'get_filters.php',
         type: 'GET',
         data: { id: categoryId },
-        success: function(response) {
-            console.log("get_filters response:", response); // проверяем JSON 
+        success: function(response) {             
             let data = JSON.parse(response);
 
             // контейнеры фильтров по id
