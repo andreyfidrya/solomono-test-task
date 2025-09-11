@@ -126,6 +126,14 @@ function updateApplyButtonCount() {
 
 jQuery("#filter_modal_reset").on("click", function () {
     jQuery(".filter-btn").removeClass("active");
+
+    // Сброс выбранных фильтров в объекте
+    selectedFilters = {
+        brands: [],
+        lengths: [],
+        tests: []
+    };
+
     updateApplyButtonCount();    
 });
 		      
@@ -180,9 +188,3 @@ $(document).on("click", ".filter-btn", function () {
 
     updateApplyButtonCount();
 });
-
-
-
-
-
-
