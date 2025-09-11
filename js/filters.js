@@ -51,7 +51,7 @@ function loadFilters(categoryId) {
             if (data.brands.length > 0) {
                 data.brands.forEach(function(brand) {
                     let btn = $(`<button class="filter-btn" data-type="brand" data-value="${brand}">${brand}</button>`);
-                    if (selectedFilters.brands.includes(brand)) {
+                    if (selectedFilters.brands.includes(String(brand))) {
                         btn.addClass("active");
                     }
                     brandContainer.append(btn);
@@ -61,7 +61,7 @@ function loadFilters(categoryId) {
             if (data.lengths.length > 0) {
                 data.lengths.forEach(function(length) {
                     let btn = $(`<button class="filter-btn" data-type="length" data-value="${length}">${length}</button>`);
-                    if (selectedFilters.lengths.includes(length)) {
+                    if (selectedFilters.lengths.includes(String(length))) {
                         btn.addClass("active");
                     }
                     lengthContainer.append(btn);
@@ -71,7 +71,7 @@ function loadFilters(categoryId) {
             if (data.tests.length > 0) {
                 data.tests.forEach(function(test) {
                     let btn = $(`<button class="filter-btn" data-type="test" data-value="${test}">${test}</button>`);
-                    if (selectedFilters.tests.includes(test)) {
+                    if (selectedFilters.tests.includes(String(test))) {
                         btn.addClass("active");
                     }
                     testContainer.append(btn);
@@ -133,6 +133,14 @@ jQuery("#filter_modal_reset").on("click", function () {
         lengths: [],
         tests: []
     };
+    
+    // Сохраняем пустые фильтры (или можно вообще удалить ключ)
+    localStorage.removeItem("selectedFilters");
+
+    // Перерисовываем фильтры для текущей категории
+    if (currentCategory > 0) {
+        loadFilters(currentCategory);
+    }
 
     updateApplyButtonCount();    
 });
@@ -176,7 +184,7 @@ let selectedFilters = {
 
 $(document).on("click", ".filter-btn", function () {
     const type = $(this).data("type");
-    const value = $(this).data("value");
+    const value = String($(this).data("value")); // ← всегда строка
 
     $(this).toggleClass("active");
 
@@ -185,6 +193,34 @@ $(document).on("click", ".filter-btn", function () {
     } else {
         selectedFilters[type + "s"] = selectedFilters[type + "s"].filter(v => v !== value);
     }
-
+    saveFilters();
     updateApplyButtonCount();
 });
+
+// --- localStorage helpers (в глобальной области) ---
+function saveFilters() {
+    try {
+        localStorage.setItem("selectedFilters", JSON.stringify(selectedFilters));
+    } catch (e) {
+        // ignore
+        console.warn('saveFilters error', e);
+    }
+}
+
+function restoreFilters() {
+    try {
+        const raw = localStorage.getItem("selectedFilters");
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        selectedFilters = {
+            brands: Array.isArray(parsed.brands) ? parsed.brands.map(String) : [],
+            lengths: Array.isArray(parsed.lengths) ? parsed.lengths.map(String) : [],
+            tests: Array.isArray(parsed.tests) ? parsed.tests.map(String) : []
+        };
+    } catch (e) {
+        console.warn('restoreFilters error', e);
+    }
+}
+
+// восстановим при старте, чтобы loadFilters мог подсветить кнопки
+restoreFilters();
