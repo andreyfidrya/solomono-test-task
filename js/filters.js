@@ -50,29 +50,36 @@ function loadFilters(categoryId) {
             
             if (data.brands.length > 0) {
                 data.brands.forEach(function(brand) {
-                    brandContainer.append(
-                        `<button class="filter-btn" data-type="brand" data-value="${brand}">${brand} </button>`
-                    );
+                    let btn = $(`<button class="filter-btn" data-type="brand" data-value="${brand}">${brand}</button>`);
+                    if (selectedFilters.brands.includes(brand)) {
+                        btn.addClass("active");
+                    }
+                    brandContainer.append(btn);
                 });
             }
 
             if (data.lengths.length > 0) {
-                data.lengths.forEach(function(len) {
-                    lengthContainer.append(
-                        `<button class="filter-btn" data-type="length" data-value="${len}">${len} мм</button>`
-                    );
+                data.lengths.forEach(function(length) {
+                    let btn = $(`<button class="filter-btn" data-type="length" data-value="${length}">${length}</button>`);
+                    if (selectedFilters.lengths.includes(length)) {
+                        btn.addClass("active");
+                    }
+                    lengthContainer.append(btn);
                 });
-            }
-
+            } 
+            
             if (data.tests.length > 0) {
                 data.tests.forEach(function(test) {
-                    testContainer.append(
-                        `<button class="filter-btn" data-type="test" data-value="${test}">${test} гр</button>`
-                    );
+                    let btn = $(`<button class="filter-btn" data-type="test" data-value="${test}">${test}</button>`);
+                    if (selectedFilters.tests.includes(test)) {
+                        btn.addClass("active");
+                    }
+                    testContainer.append(btn);
                 });
-            }                        
+            }
+                                    
         }
-    });
+    });    
 }
 
 function updateApplyButtonCount() {
@@ -117,12 +124,6 @@ function updateApplyButtonCount() {
     });
 }
 
-// делегирование клика по кнопкам фильтров
-$(document).on("click", ".filter-btn", function () {
-    $(this).toggleClass("active");
-    updateApplyButtonCount();
-});
-
 jQuery("#filter_modal_reset").on("click", function () {
     jQuery(".filter-btn").removeClass("active");
     updateApplyButtonCount();    
@@ -158,3 +159,30 @@ $('#filter_modal_apply').on('click', function () {
     $('#filters_backdrop').fadeOut();
     $('#filters_modal').removeClass('open');
 });
+
+let selectedFilters = {
+    brands: [],
+    lengths: [],
+    tests: []
+};
+
+$(document).on("click", ".filter-btn", function () {
+    const type = $(this).data("type");
+    const value = $(this).data("value");
+
+    $(this).toggleClass("active");
+
+    if ($(this).hasClass("active")) {
+        selectedFilters[type + "s"].push(value);
+    } else {
+        selectedFilters[type + "s"] = selectedFilters[type + "s"].filter(v => v !== value);
+    }
+
+    updateApplyButtonCount();
+});
+
+
+
+
+
+
