@@ -85,6 +85,15 @@ require_once "functions.php";
 						</select>
 					</div>																
 				</div>
+				<hr class="solid opacity-7">
+				<div class="p-3">
+					<label for="price-range" class="form-label fw-bold">Ціна:</label>
+					<div id="price-range"></div>
+					<div class="d-flex justify-content-between mt-2">
+						<span id="price-min">0</span> грн
+						<span id="price-max">10000</span> грн
+					</div>
+				</div>
 			</div>						
 			<div class="col-lg-3-5 col-xl-4-5">
 				<!-- Хедер с кнопкой фильтров -->
@@ -200,9 +209,7 @@ require_once "functions.php";
 		<!-- Examples -->
 		<script src="js/examples/examples.header.menu.js"></script>
 		<script src="js/examples/examples.ecommerce.form.js"></script>
-		<script src="js/examples/examples.ecommerce.sidebar.overlay.js"></script>
-
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="js/examples/examples.ecommerce.sidebar.overlay.js"></script>		
 		
 		<script src="js/products.js"></script>
 		<script src="js/cart.js"></script>

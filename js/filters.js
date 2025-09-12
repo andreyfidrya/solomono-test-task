@@ -224,3 +224,19 @@ function restoreFilters() {
 
 // восстановим при старте, чтобы loadFilters мог подсветить кнопки
 restoreFilters();
+
+$(function() {
+    const minPrice = 0;
+    const maxPrice = 10000;
+
+    $("#price-range").slider({
+        range: true,
+        min: minPrice,
+        max: maxPrice,
+        values: [minPrice, maxPrice],
+        slide: function(event, ui) {
+            $("#price-min").text(ui.values[0]);
+            $("#price-max").text(ui.values[1]);
+        }
+    });
+});
