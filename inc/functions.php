@@ -70,5 +70,12 @@ function getFiltersByCategory(PDO $pdo, int $categoryId) {
     return $filters;
 }
 
+function getPriceRange(PDO $pdo) {
+    $sql = "SELECT MIN(product_price) as min_price, MAX(product_price) as max_price FROM products";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
 
 

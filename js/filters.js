@@ -226,8 +226,8 @@ function restoreFilters() {
 restoreFilters();
 
 $(function() {
-    const minPrice = 0;
-    const maxPrice = 10000;
+    const minPrice = window.priceRange.min;
+    const maxPrice = window.priceRange.max;
 
     $("#price-range").slider({
         range: true,

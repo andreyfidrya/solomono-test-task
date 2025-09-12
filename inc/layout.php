@@ -2,6 +2,10 @@
 
 require_once "functions.php";
 
+$priceRange = getPriceRange($pdo);
+$minPrice = (int)$priceRange['min_price'];
+$maxPrice = (int)$priceRange['max_price'];
+
 ?>
 
 <!doctype html>
@@ -90,8 +94,8 @@ require_once "functions.php";
 					<label for="price-range" class="form-label fw-bold">Ціна:</label>
 					<div id="price-range"></div>
 					<div class="d-flex justify-content-between mt-2">
-						<span id="price-min">0</span> грн
-						<span id="price-max">10000</span> грн
+						<span id="price-min"><?php echo $minPrice; ?></span> грн
+						<span id="price-max"><?php echo $maxPrice; ?></span> грн
 					</div>
 				</div>
 			</div>						
@@ -114,6 +118,14 @@ require_once "functions.php";
 				</div>							
 			</div>
 		</div>
+
+		<script>
+			// Передаём значения в JS
+			window.priceRange = {
+				min: <?php echo $minPrice; ?>,
+				max: <?php echo $maxPrice; ?>
+			};
+		</script>
 
 		<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-centered">
