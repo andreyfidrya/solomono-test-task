@@ -1,6 +1,6 @@
 let currentCategory = 0;
 let minPrice = 0;
-let maxPrice = 10000; 
+let maxPrice = 10000; // максимальная цена по умолчанию
 
 function loadProducts(categoryId = 0, sort = "", filters = {}) {
     categoryId = parseInt(categoryId) || 0;
