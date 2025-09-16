@@ -75,7 +75,3 @@ function getPriceRange(PDO $pdo) {
     $stmt = $pdo->query($sql);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
-
-
-
