@@ -237,6 +237,10 @@ $(function() {
         slide: function(event, ui) {
             $("#price-min").text(ui.values[0]);
             $("#price-max").text(ui.values[1]);
+        },
+        change: function(event, ui) {
+            // при изменении диапазона — перезагружаем товары
+            loadProducts(currentCategory, $("#sort").val(), ui.values[0], ui.values[1]);
         }
     });
 });

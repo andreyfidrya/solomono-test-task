@@ -14,7 +14,7 @@ function getAllCategoriesWithCounts(PDO $pdo) {
         FROM categories c
         LEFT JOIN products p ON c.id = p.category_id
         GROUP BY c.id, c.category_name
-        ORDER BY c.id ASC
+        ORDER BY c.id ASC 
     ";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

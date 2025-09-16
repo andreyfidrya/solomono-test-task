@@ -8,12 +8,16 @@ $categoryId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
 $filters    = isset($_GET['filters']) ? json_decode($_GET['filters'], true) : [];
 
-$sql = "SELECT * FROM products";
+// новые параметры для фильтра по цене
+$minPrice = isset($_GET['min_price']) ? (int)$_GET['min_price'] : 0;
+$maxPrice = isset($_GET['max_price']) ? (int)$_GET['max_price'] : 1000000;
+
+$sql = "SELECT * FROM products WHERE 1=1";
 $params = [];
 
 // Фильтр по категории
 if ($categoryId > 0) {
-    $sql .= " WHERE category_id = ?";
+    $sql .= " AND category_id = ?";
     $params[] = $categoryId;
 }
 
@@ -37,6 +41,11 @@ if (!empty($filters['tests'])) {
     $sql .= " AND product_test IN ($placeholders)";
     $params = array_merge($params, $filters['tests']);
 }
+
+// фильтрация по цене
+$sql .= " AND product_price BETWEEN ? AND ?";
+$params[] = $minPrice;
+$params[] = $maxPrice;
 
 // Сортировка
 switch ($sort) {

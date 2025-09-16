@@ -1,4 +1,6 @@
 let currentCategory = 0;
+let minPrice = 0;
+let maxPrice = 10000; // максимальная цена по умолчанию
 
 function loadProducts(categoryId = 0, sort = "", filters = {}) {
     categoryId = parseInt(categoryId) || 0;
@@ -10,7 +12,9 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
         data: { 
             id: categoryId, 
             sort: sort, 
-            filters: JSON.stringify(filters)
+            filters: JSON.stringify(filters),
+            min_price: minPrice,
+            max_price: maxPrice
         },
         success: function (response) {
             $('#products-container').html(response);
@@ -54,6 +58,10 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
 				params.delete('tests');
 			}
 
+            // сохраняем цену в URL
+            params.set('min_price', minPrice);
+            params.set('max_price', maxPrice);
+
             let newUrl = window.location.pathname;
             let queryString = params.toString();
             if (queryString) {
@@ -86,6 +94,25 @@ function toggleFiltersHeader() {
 }
 
 $(document).ready(function () {
+    // инициализация ползунка цены
+    $("#price-range").slider({
+        range: true,
+        min: 0,
+        max: 10000,
+        values: [0, 10000],
+        slide: function (event, ui) {
+            $("#price-min").text(ui.values[0]);
+            $("#price-max").text(ui.values[1]);
+            minPrice = ui.values[0];
+            maxPrice = ui.values[1];
+        },
+        change: function (event, ui) {
+            minPrice = ui.values[0];
+            maxPrice = ui.values[1];
+            loadProducts(currentCategory, $('#sort').val());
+        }
+    });
+
     // клик по категории
     $(document).on('click', '.category-link', function (e) {
         e.preventDefault();
@@ -103,6 +130,13 @@ $(document).ready(function () {
     const initialCategory = parseInt(urlParams.get('category')) || 0;
     const initialSort = urlParams.get('sort') || "";
     const initialFilters = urlParams.get('filters') ? JSON.parse(urlParams.get('filters')) : {};
+
+    // восстанавливаем цену из URL, если была
+    minPrice = parseInt(urlParams.get('min_price')) || 0;
+    maxPrice = parseInt(urlParams.get('max_price')) || 10000;
+    $("#price-range").slider("values", [minPrice, maxPrice]);
+    $("#price-min").text(minPrice);
+    $("#price-max").text(maxPrice);
 
     $('#sort').val(initialSort);
 
