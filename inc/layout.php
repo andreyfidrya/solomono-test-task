@@ -95,7 +95,7 @@ $maxPrice = (int)$priceRange['max_price'];
 			</div>						
 			<div class="col-lg-3-5 col-xl-4-5">
 				<!-- Хедер с кнопкой фильтров -->
-				<div class="category-filters-hidden mb-3 d-none" id="filtersHeader">
+				<div class="category-filters-hidden mb-3" id="filtersHeader">
 					<div class="category-wrapper-filters d-flex align-items-center gap-3">
 						
 						<!-- Кнопка фильтров -->

@@ -88,11 +88,8 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
 }
 
 function toggleFiltersHeader() {
-    if (currentCategory > 0) {
-        $('#filtersHeader').removeClass('d-none');
-    } else {
-        $('#filtersHeader').addClass('d-none');
-    }
+    if (currentCategory > 0) $('#filtersHeader').removeClass('d-none');
+    else $('#filtersHeader').addClass('d-none');
 }
 
 $(document).ready(function () {
