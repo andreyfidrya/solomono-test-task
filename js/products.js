@@ -1,10 +1,12 @@
 let currentCategory = 0;
-let minPrice = 0;
-let maxPrice = 10000; // максимальная цена по умолчанию
 
 function loadProducts(categoryId = 0, sort = "", filters = {}) {
     categoryId = parseInt(categoryId) || 0;
     currentCategory = categoryId;
+
+    // всегда берём актуальные значения из слайдера
+    let minPrice = $("#price-range").slider("values", 0);
+    let maxPrice = $("#price-range").slider("values", 1);
 
     $.ajax({
         url: 'get_products.php',
@@ -35,30 +37,30 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
             }
 
             if (filters && (filters.brands?.length || filters.lengths?.length || filters.tests?.length)) {
-				if (filters.brands?.length) {
-					params.set('brands', filters.brands.join(','));
-				} else {
-					params.delete('brands');
-				}
+                if (filters.brands?.length) {
+                    params.set('brands', filters.brands.join(','));
+                } else {
+                    params.delete('brands');
+                }
                 
                 if (filters.lengths?.length) {
-					params.set('lengths', filters.lengths.join(','));
-				} else {
-					params.delete('lengths');
-				}
+                    params.set('lengths', filters.lengths.join(','));
+                } else {
+                    params.delete('lengths');
+                }
 
-				if (filters.tests?.length) {
-					params.set('tests', filters.tests.join(','));
-				} else {
-					params.delete('tests');
-				}
-			} else {
-				params.delete('brands');
+                if (filters.tests?.length) {
+                    params.set('tests', filters.tests.join(','));
+                } else {
+                    params.delete('tests');
+                }
+            } else {
+                params.delete('brands');
                 params.delete('lengths');
-				params.delete('tests');
-			}
+                params.delete('tests');
+            }
 
-            // сохраняем цену в URL
+            // сохраняем цену в URL (из слайдера)
             params.set('min_price', minPrice);
             params.set('max_price', maxPrice);
 
@@ -94,21 +96,17 @@ function toggleFiltersHeader() {
 }
 
 $(document).ready(function () {
-    // инициализация ползунка цены
+    // инициализация слайдера на базе PHP диапазона
     $("#price-range").slider({
         range: true,
-        min: 0,
-        max: 10000,
-        values: [0, 10000],
+        min: window.priceRange.min,
+        max: window.priceRange.max,
+        values: [window.priceRange.min, window.priceRange.max],
         slide: function (event, ui) {
             $("#price-min").text(ui.values[0]);
             $("#price-max").text(ui.values[1]);
-            minPrice = ui.values[0];
-            maxPrice = ui.values[1];
         },
-        change: function (event, ui) {
-            minPrice = ui.values[0];
-            maxPrice = ui.values[1];
+        change: function () {
             loadProducts(currentCategory, $('#sort').val());
         }
     });
@@ -117,7 +115,9 @@ $(document).ready(function () {
     $(document).on('click', '.category-link', function (e) {
         e.preventDefault();
         currentCategory = parseInt($(this).data('id'));
-        loadProducts(currentCategory, $('#sort').val());
+        updatePriceRange(currentCategory, function () {
+            loadProducts(currentCategory, $('#sort').val());
+        });
     });
 
     // выбор сортировки
@@ -130,15 +130,48 @@ $(document).ready(function () {
     const initialCategory = parseInt(urlParams.get('category')) || 0;
     const initialSort = urlParams.get('sort') || "";
     const initialFilters = urlParams.get('filters') ? JSON.parse(urlParams.get('filters')) : {};
+    const initialMin = parseInt(urlParams.get('min_price'));
+    const initialMax = parseInt(urlParams.get('max_price'));
 
-    // восстанавливаем цену из URL, если была
-    minPrice = parseInt(urlParams.get('min_price')) || 0;
-    maxPrice = parseInt(urlParams.get('max_price')) || 10000;
-    $("#price-range").slider("values", [minPrice, maxPrice]);
-    $("#price-min").text(minPrice);
-    $("#price-max").text(maxPrice);
+    // сначала обновляем диапазон по категории, а потом применяем min/max из URL
+    updatePriceRange(initialCategory, function () {
+        if (!isNaN(initialMin) && !isNaN(initialMax)) {
+            $("#price-range").slider("values", [initialMin, initialMax]);
+            $("#price-min").text(initialMin);
+            $("#price-max").text(initialMax);
+        }
 
-    $('#sort').val(initialSort);
+        $('#sort').val(initialSort);
 
-    loadProducts(initialCategory, initialSort, initialFilters);
+        loadProducts(initialCategory, initialSort, initialFilters);
+    });
 });
+
+function updatePriceRange(categoryId, callback) {
+    $.get('get_price_range.php', { category: categoryId }, function(response) {
+        let data = JSON.parse(response);
+
+        // разрушаем старый слайдер и создаём новый с min/max
+        $("#price-range").slider("destroy").slider({
+            range: true,
+            min: data.min,
+            max: data.max,
+            values: [data.min, data.max],
+            slide: function(event, ui) {
+                $("#price-min").text(ui.values[0]);
+                $("#price-max").text(ui.values[1]);
+            },
+            change: function() {
+                // только когда пользователь закончил движение ползунка
+                loadProducts(currentCategory, $('#sort').val());
+            }
+        });
+
+        // обновляем подписи
+        $("#price-min").text(data.min);
+        $("#price-max").text(data.max);
+
+        if (typeof callback === "function") callback();
+    });
+}
+

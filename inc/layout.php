@@ -2,7 +2,8 @@
 
 require_once "functions.php";
 
-$priceRange = getPriceRange($pdo);
+$currentCategory = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+$priceRange = getPriceRange($pdo, $currentCategory);
 $minPrice = (int)$priceRange['min_price'];
 $maxPrice = (int)$priceRange['max_price'];
 

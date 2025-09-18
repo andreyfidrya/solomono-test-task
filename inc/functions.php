@@ -70,8 +70,16 @@ function getFiltersByCategory(PDO $pdo, int $categoryId) {
     return $filters;
 }
 
-function getPriceRange(PDO $pdo) {
-    $sql = "SELECT MIN(product_price) as min_price, MAX(product_price) as max_price FROM products";
-    $stmt = $pdo->query($sql);
+function getPriceRange(PDO $pdo, int $categoryId = 0) {
+    if ($categoryId > 0) {
+        $sql = "SELECT MIN(product_price) as min_price, MAX(product_price) as max_price 
+                FROM products 
+                WHERE category_id = :categoryId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['categoryId' => $categoryId]);
+    } else {
+        $sql = "SELECT MIN(product_price) as min_price, MAX(product_price) as max_price FROM products";
+        $stmt = $pdo->query($sql);
+    }
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
