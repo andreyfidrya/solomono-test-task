@@ -174,4 +174,3 @@ function updatePriceRange(categoryId, callback) {
         if (typeof callback === "function") callback();
     });
 }
-
