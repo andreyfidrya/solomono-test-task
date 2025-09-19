@@ -27,7 +27,10 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
             if (categoryId > 0) {
                 params.set('category', categoryId);
             } else {
-                params.delete('category');
+                // если в URL изначально не было category, не добавляем category=0
+                if (params.has('category')) {
+                    params.delete('category');
+                }
             }
 
             if (sort) {
@@ -124,7 +127,12 @@ $(document).ready(function () {
 
     // начальная загрузка
     const urlParams = new URLSearchParams(window.location.search);
-    const initialCategory = parseInt(urlParams.get('category')) || 0;
+    const initialCategory = urlParams.has('category') 
+    ? parseInt(urlParams.get('category')) || 0 
+    : currentCategory;
+
+    currentCategory = initialCategory; 
+
     const initialSort = urlParams.get('sort') || "";
     const initialFilters = urlParams.get('filters') ? JSON.parse(urlParams.get('filters')) : {};
     const initialMin = parseInt(urlParams.get('min_price'));
