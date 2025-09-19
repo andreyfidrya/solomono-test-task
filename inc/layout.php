@@ -75,7 +75,7 @@ $maxPrice = (int)$priceRange['max_price'];
 							<h4 class="card-title">КАТЕГОРІЇ</h4>
 						</div>
 						<?php
-						$currentCategory = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+						//$currentCategory = isset($_GET['category']) ? (int)$_GET['category'] : 0;
 						echo displayCategoriesList($pdo, $currentCategory);
 						?>
 					</div>
