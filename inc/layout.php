@@ -114,8 +114,21 @@ $maxPrice = (int)$priceRange['max_price'];
 						<label for="price-range" class="form-label fw-bold mb-0">Ціна:</label>
 						<div id="price-range" style="width:200px;"></div>
 						<div class="ms-2">
-							<span id="price-min"><?php echo $minPrice; ?></span> грн –
-							<span id="price-max"><?php echo $maxPrice; ?></span> грн
+							<input 
+								type="number" 
+								id="price-min" 
+								value="<?php echo $minPrice; ?>" 
+								class="form-control d-inline-block" 
+								style="width: 80px;"
+							> грн – 
+
+							<input 
+								type="number" 
+								id="price-max" 
+								value="<?php echo $maxPrice; ?>" 
+								class="form-control d-inline-block" 
+								style="width: 80px;"
+							> грн
 						</div>
 						</div>
 

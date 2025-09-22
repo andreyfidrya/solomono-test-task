@@ -173,8 +173,8 @@ function updatePriceRange(categoryId, callback) {
         });
 
         // обновляем подписи
-        $("#price-min").text(data.min);
-        $("#price-max").text(data.max);
+        $("#price-min").val(data.min);
+        $("#price-max").val(data.max);        
 
         if (typeof callback === "function") callback();
     });
