@@ -7,6 +7,7 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
     // всегда берём актуальные значения из слайдера
     let minPrice = $("#price-range").slider("values", 0);
     let maxPrice = $("#price-range").slider("values", 1);
+    let cart = [];
 
     $.ajax({
         url: 'get_products.php',
@@ -27,7 +28,6 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
             if (categoryId > 0) {
                 params.set('category', categoryId);
             } else {
-                // если в URL изначально не было category, не добавляем category=0
                 if (params.has('category')) {
                     params.delete('category');
                 }
@@ -63,7 +63,7 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
                 params.delete('tests');
             }
 
-            // сохраняем цену в URL (из слайдера)
+            // сохраняем цену в URL
             params.set('min_price', minPrice);
             params.set('max_price', maxPrice);
 
@@ -95,19 +95,86 @@ function toggleFiltersHeader() {
     else $('#filtersHeader').addClass('d-none');
 }
 
+// ————— helper: надёжно установить значения слайдера —————
+function setSliderValues(min, max, cb) {
+    const $slider = $("#price-range");
+
+    // если слайдера ещё нет / он пересоздаётся — повторим попытку
+    if (!$slider.length || !$slider.hasClass('ui-slider')) {
+        // подождать немного и повторить (т.к. updatePriceRange делает destroy/slider)
+        setTimeout(function () {
+            setSliderValues(min, max, cb);
+        }, 50);
+        return;
+    }
+
+    const sliderMin = $slider.slider("option", "min");
+    const sliderMax = $slider.slider("option", "max");
+
+    // валидация
+    if (!Number.isFinite(min)) min = sliderMin;
+    if (!Number.isFinite(max)) max = sliderMax;
+    if (min < sliderMin) min = sliderMin;
+    if (max > sliderMax) max = sliderMax;
+    if (min > max) max = min;
+
+    // обновляем инпуты (на случай исправления)
+    $('#price-min').val(min);
+    $('#price-max').val(max);
+
+    // ставим значения (несколько способов — для надёжности)
+    try {
+        $slider.slider("values", [min, max]); // иногда работает
+    } catch (e) { /* ignore */ }
+    // ставим по-индексно
+    $slider.slider("values", 0, min);
+    $slider.slider("values", 1, max);
+
+    // на всякий случай триггерим события слайдера (если где-то слушают)
+    $slider.trigger("slide", { values: [min, max] });
+    $slider.trigger("change", { values: [min, max] });
+
+    if (typeof cb === "function") cb();
+}
+
+// ————— синхронизатор, вызываемый по blur / Enter —————
+function syncSliderWithInputs() {
+    let min = Number($('#price-min').val());
+    let max = Number($('#price-max').val());
+
+    // Если пользователь ввёл не число — пусть дальнейшая логика поправит
+    setSliderValues(min, max, function () {
+        // загрузить товары уже после того как слайдер установился
+        loadProducts(currentCategory, $('#sort').val());
+    });
+}
+
 $(document).ready(function () {
-    // инициализация слайдера на базе PHP диапазона
+    // инициализация слайдера на базе глобального диапазона
     $("#price-range").slider({
         range: true,
         min: window.priceRange.min,
         max: window.priceRange.max,
         values: [window.priceRange.min, window.priceRange.max],
-        slide: function (event, ui) {
-            $("#price-min").text(ui.values[0]);
-            $("#price-max").text(ui.values[1]);
+        slide: function(event, ui) {
+            $("#price-min").val(ui.values[0]);
+            $("#price-max").val(ui.values[1]);
         },
         change: function () {
             loadProducts(currentCategory, $('#sort').val());
+        }
+    });
+
+    // привязки — один раз, делегировано
+    $(document).off('blur', '#price-min, #price-max', syncSliderWithInputs);
+    $(document).on('blur', '#price-min, #price-max', syncSliderWithInputs);
+
+    // Enter в инпуте — применяем тоже
+    $(document).off('keydown', '#price-min, #price-max');
+    $(document).on('keydown', '#price-min, #price-max', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $(this).blur(); // вызовет syncSliderWithInputs
         }
     });
 
@@ -117,7 +184,7 @@ $(document).ready(function () {
         currentCategory = parseInt($(this).data('id'));
         updatePriceRange(currentCategory, function () {
             loadProducts(currentCategory, $('#sort').val());
-        });
+        }, true); // сброс на min/max категории
     });
 
     // выбор сортировки
@@ -128,8 +195,8 @@ $(document).ready(function () {
     // начальная загрузка
     const urlParams = new URLSearchParams(window.location.search);
     const initialCategory = urlParams.has('category') 
-    ? parseInt(urlParams.get('category')) || 0 
-    : currentCategory;
+        ? parseInt(urlParams.get('category')) || 0 
+        : currentCategory;
 
     currentCategory = initialCategory; 
 
@@ -138,44 +205,53 @@ $(document).ready(function () {
     const initialMin = parseInt(urlParams.get('min_price'));
     const initialMax = parseInt(urlParams.get('max_price'));
 
-    // сначала обновляем диапазон по категории, а потом применяем min/max из URL
+    // обновляем диапазон по категории
     updatePriceRange(initialCategory, function () {
         if (!isNaN(initialMin) && !isNaN(initialMax)) {
             $("#price-range").slider("values", [initialMin, initialMax]);
-            $("#price-min").text(initialMin);
-            $("#price-max").text(initialMax);
+            $("#price-min").val(initialMin);
+            $("#price-max").val(initialMax);
         }
-
         $('#sort').val(initialSort);
-
         loadProducts(initialCategory, initialSort, initialFilters);
-    });
+    }, false); // при загрузке — не сбрасываем, а применяем min/max из URL
 });
 
-function updatePriceRange(categoryId, callback) {
+function updatePriceRange(categoryId, callback, resetToCategoryRange = true) {
     $.get('get_price_range.php', { category: categoryId }, function(response) {
         let data = JSON.parse(response);
 
-        // разрушаем старый слайдер и создаём новый с min/max
+        // пересоздаём слайдер
         $("#price-range").slider("destroy").slider({
             range: true,
             min: data.min,
             max: data.max,
             values: [data.min, data.max],
             slide: function(event, ui) {
-                $("#price-min").text(ui.values[0]);
-                $("#price-max").text(ui.values[1]);
+                $("#price-min").val(ui.values[0]);
+                $("#price-max").val(ui.values[1]);
             },
             change: function() {
-                // только когда пользователь закончил движение ползунка
                 loadProducts(currentCategory, $('#sort').val());
             }
         });
 
-        // обновляем подписи
-        $("#price-min").val(data.min);
-        $("#price-max").val(data.max);        
+        if (resetToCategoryRange) {
+            // сброс на min/max новой категории
+            setSliderValues(data.min, data.max);
+        } else {
+            // оставляем текущее из инпутов (или URL)
+            let min = parseInt($("#price-min").val()) || data.min;
+            let max = parseInt($("#price-max").val()) || data.max;
+            setSliderValues(min, max);
+        }
 
         if (typeof callback === "function") callback();
     });
 }
+
+
+
+
+
+
