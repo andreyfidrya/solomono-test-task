@@ -249,9 +249,3 @@ function updatePriceRange(categoryId, callback, resetToCategoryRange = true) {
         if (typeof callback === "function") callback();
     });
 }
-
-
-
-
-
-
