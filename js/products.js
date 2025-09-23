@@ -7,7 +7,7 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
     // всегда берём актуальные значения из слайдера
     let minPrice = $("#price-range").slider("values", 0);
     let maxPrice = $("#price-range").slider("values", 1);
-    let cart = [];
+    // let cart = [];
 
     $.ajax({
         url: 'get_products.php',
@@ -87,7 +87,7 @@ function loadProducts(categoryId = 0, sort = "", filters = {}) {
         }
     });
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+    // localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function toggleFiltersHeader() {
